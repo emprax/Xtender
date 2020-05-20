@@ -25,3 +25,6 @@ All together a client is used that holds a reference to the root-segment in the 
 
 #### V2
 
+A second version has been established to solve the aforementioned disadvantage in efficiency. The main difference with this version and the previous one is that the handlers/segments are stored in a dictionary instead of chaining them together. 
+
+The dictionary, as map-like structure, is a well-known collective data-structure that can save a value on a location that is linked to a key, where the key can be of any data-type and calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing complexity.
