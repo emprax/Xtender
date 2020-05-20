@@ -1,8 +1,0 @@
-C:\Repos\Xtender\Xtender\bin\Debug\netstandard2.1\Xtender.deps.json
-C:\Repos\Xtender\Xtender\bin\Debug\netstandard2.1\Xtender.dll
-C:\Repos\Xtender\Xtender\bin\Debug\netstandard2.1\Xtender.pdb
-C:\Repos\Xtender\Xtender\obj\Debug\netstandard2.1\Xtender.csproj.CoreCompileInputs.cache
-C:\Repos\Xtender\Xtender\obj\Debug\netstandard2.1\Xtender.AssemblyInfoInputs.cache
-C:\Repos\Xtender\Xtender\obj\Debug\netstandard2.1\Xtender.AssemblyInfo.cs
-C:\Repos\Xtender\Xtender\obj\Debug\netstandard2.1\Xtender.dll
-C:\Repos\Xtender\Xtender\obj\Debug\netstandard2.1\Xtender.pdb
