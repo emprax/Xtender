@@ -1,0 +1,12 @@
+C:\Repos\Xtender\Xtender.DependencyInjection\bin\Debug\netstandard2.1\Xtender.DependencyInjection.deps.json
+C:\Repos\Xtender\Xtender.DependencyInjection\bin\Debug\netstandard2.1\Xtender.DependencyInjection.dll
+C:\Repos\Xtender\Xtender.DependencyInjection\bin\Debug\netstandard2.1\Xtender.DependencyInjection.pdb
+C:\Repos\Xtender\Xtender.DependencyInjection\bin\Debug\netstandard2.1\Xtender.dll
+C:\Repos\Xtender\Xtender.DependencyInjection\bin\Debug\netstandard2.1\Xtender.pdb
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.csprojAssemblyReference.cache
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.csproj.CoreCompileInputs.cache
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.AssemblyInfoInputs.cache
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.AssemblyInfo.cs
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.csproj.CopyComplete
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.dll
+C:\Repos\Xtender\Xtender.DependencyInjection\obj\Debug\netstandard2.1\Xtender.DependencyInjection.pdb

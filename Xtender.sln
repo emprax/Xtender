@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30001.183
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender", "Xtender\Xtender.csproj", "{001363A5-6942-4F69-BF44-D53C742EE8A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.DependencyInjection", "Xtender.DependencyInjection\Xtender.DependencyInjection.csproj", "{805B7747-D50E-4C7C-B927-5D362FDCCE6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{001363A5-6942-4F69-BF44-D53C742EE8A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{001363A5-6942-4F69-BF44-D53C742EE8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{001363A5-6942-4F69-BF44-D53C742EE8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{001363A5-6942-4F69-BF44-D53C742EE8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89B2313C-4AB7-4847-890A-CD3A6677FDB7}
+	EndGlobalSection
+EndGlobal
