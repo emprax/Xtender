@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30001.183
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender", "Xtender\Xtender.csproj", "{001363A5-6942-4F69-BF44-D53C742EE8A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.DependencyInjection", "Xtender.DependencyInjection\Xtender.DependencyInjection.csproj", "{805B7747-D50E-4C7C-B927-5D362FDCCE6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.DependencyInjection", "Xtender.DependencyInjection\Xtender.DependencyInjection.csproj", "{805B7747-D50E-4C7C-B927-5D362FDCCE6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Example.Console", "Xtender.Example.Console\Xtender.Example.Console.csproj", "{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{805B7747-D50E-4C7C-B927-5D362FDCCE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

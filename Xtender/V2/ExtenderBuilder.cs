@@ -19,7 +19,7 @@ namespace Xtender.V2
         public IExtender<TState> Build(IExtension<object> defaultExtension)
         {
             return new Extender<TState>(extender => extensions.ToDictionary(
-                x => x.Key,
+                x => x.Key.FullName,
                 x => x.Value.Invoke(extender)),
                 defaultExtension);
         }
