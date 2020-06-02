@@ -100,13 +100,13 @@ To make life as a developer easier, the library comes with a ServiceCollection e
 
 ```c#
 var services = new ServiceCollection()
-	.AddXtender<Component, string>((builder, provider) =>
+    .AddXtender<Component, string>((builder, provider) =>
     {
-    	return builder
-        	.Attach(extender => new ItemExtension(extender))
+        return builder
+            .Attach(extender => new ItemExtension(extender))
             .Attach(extender => new CompositeExtension(extender))
             .Build();
-	})
+    })
     .BuildServiceProvider();
 ```
 
