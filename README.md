@@ -32,3 +32,84 @@ A second version has been established to solve the aforementioned disadvantage i
 ![Xtender-V2](docs/Xtender-V2.png)
 
 The dictionary, as map-like structure, is a well-known collective data-structure that can save a value on a location that is linked to a key, where the key can be of any data-type and calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing complexity.
+
+
+
+### Coding Guide
+
+This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application.
+
+#### Accepter
+
+The accepter is the object that can be visited/extended. It most likely would be an object that is part of a composite. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not to be abstracted away is that every concrete implementation has to provide itself to the extender so the extender can determine the right implementation it should be working on.
+
+```c#
+public abstract Component : IAccepter
+{
+    public abstract Task Accept<TState>(IExtender<TState> extender);
+}
+
+public class Item : Component
+{
+    public string Context { get; set; }
+    
+    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+}
+
+public class Composite : Component
+{
+    public IList<Component> Components { get; set; }
+    
+    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+}
+```
+
+Here the composite-pattern-component implements the IAccepter interface and provide the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method.
+
+#### Extensions
+
+The extensions are the segments in that each handle a concrete implementation regarding a composite.
+
+```c#
+public class ItemExtension : Extension<string, Component, Item>
+{
+    public ItemExtension(IExtender<Component, string> extender) : base(extender) { }
+
+    protected override Task Extent(Item context)
+    {
+        System.Console.WriteLine("Entered ItemExtension");
+        if (base.extender.State is null)
+        {
+            base.extender.State = "Encountered an Item regarding Component.";
+        }
+        else
+        {
+            base.extender.State += "Encountered an Item regarding Component.";
+        }
+
+        return Task.CompletedTask;
+    }
+}
+```
+
+Here the ItemExtension is an example of an extension that is responsible for processing the Item implementations regarding the aforementioned composite.
+
+#### Construction
+
+To make life as a developer easier, the library comes with a ServiceCollection extension can be used to easily implement the extender components and by building up the Extender client with its segments/extensions.
+
+```c#
+var services = new ServiceCollection()
+	.AddXtender<Component, string>((builder, provider) =>
+    {
+    	return builder
+        	.Attach(extender => new ItemExtension(extender))
+            .Attach(extender => new CompositeExtension(extender))
+            .Build();
+	})
+    .BuildServiceProvider();
+```
+
+Here both the aforementioned ItemExtension and the CompositeExtension are being linked by the builder object and by simply calling Build(), the extender can be created. The extensions themselves are being constructed this way to ensure the update-to-date dependencies. The IServiceProvider can be used next to the builder to determine the extension dependencies.
+
+The client itself is the is already being defined within the library and carries the extensions as well as the visitor-state. This state type is being determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would otherwise have been achieved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
