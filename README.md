@@ -1,7 +1,9 @@
 # Xtender
 A segmented visitor library to solidify the visitor pattern.
 
-#### Background
+[TOC]
+
+### Background
 
 Xtender, obviously named after the ability to extend, is a library developed to solidify the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) which is used to separate an algorithm from an object structure or simply dynamically add a new algorithm to such an object.
 
@@ -96,7 +98,7 @@ Here the ItemExtension is an example of an extension that is responsible for pro
 
 #### Construction
 
-To make life as a developer easier, the library comes with a ServiceCollection extension can be used to easily implement the extender components and by building up the Extender client with its segments/extensions.
+To make life as a developer easier, the library comes with a ServiceCollection extension that can be used to easily implement the extender components and by building up the Extender client with its segments/extensions.
 
 ```c#
 var services = new ServiceCollection()
@@ -110,6 +112,19 @@ var services = new ServiceCollection()
     .BuildServiceProvider();
 ```
 
-Here both the aforementioned ItemExtension and the CompositeExtension are being linked by the builder object and by simply calling Build(), the extender can be created. The extensions themselves are being constructed this way to ensure the update-to-date dependencies. The IServiceProvider can be used next to the builder to determine the extension dependencies.
+Here both the aforementioned ItemExtension and the CompositeExtension are being linked by the builder object and the extender can be created by simply calling Build(). The extensions themselves are being constructed this way to ensure that they perserve update-to-date dependencies (dependencies with a short lifetime and/or specific temporary data should be retrieved in update-to-date form and should not be inserted while disposed). The IServiceProvider can be used next to the builder to determine the extension dependencies. 
 
-The client itself is the is already being defined within the library and carries the extensions as well as the visitor-state. This state type is being determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would otherwise have been achieved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
+The client itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is being determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, in the old situation, have been preserved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
+
+
+
+### Which Problems to solve
+
+Possible cases to use this library:
+
+1. Using a more dynamic version of the Visitor Pattern that conforms to the SOLID design principles.
+2. When needed to traverse a tree-structure/composition where the amount of concrete component implementations could change.
+3. Recycle algorithmic components and compose a client with a custom set of combinations of these components.
+4. Using it as an intermediate layer in between the services and the domain models, where the domain models could be composed into a compositional structure. For that it is no longer a far stretch to be open minded for the idea of using the composite pattern, because the negative effects of not being able to directly access the discrete implementation of the model is mostly removed.
+
+Be aware that even though this solution is quite performant with the key-value data structure, the standard Visitor Pattern is still a good fit for more direct and easy to solve problems.
