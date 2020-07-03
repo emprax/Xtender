@@ -128,6 +128,30 @@ Here both the aforementioned ItemExtension and the CompositeExtension are being 
 
 The client itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is being determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, in the old situation, have been preserved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
 
+```C#
+// An example composition.
+var composition = new Composite
+{
+    Components = new List<Component>
+    {
+        new Item(),
+        new Item(),
+        new Composite() 
+        {
+            new Item(),
+            new Item(),
+            new Item()
+        }
+    }
+};
+
+// Getting the extender from the ServiceProvider from the DI.
+var extender = services.GetRequiredService<IExtender<Component, string>>();
+
+// The extension process here as adding new operations.
+await extender.Extent(composition);
+```
+
 
 
 ## Which Problems to solve
