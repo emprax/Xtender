@@ -1,7 +1,19 @@
 # Xtender
 A segmented visitor library to solidify the visitor pattern.
 
-[TOC]
+## Table of contents
+
+- [Xtender](#xtender)
+  * [Background](#background)
+    + [V1](#v1)
+    + [V2](#v2)
+  * [Coding Guide](#coding-guide)
+    + [Accepter](#accepter)
+    + [Extensions](#extensions)
+    + [Construction](#construction)
+  * [Which Problems to solve](#which-problems-to-solve)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## Background
 
