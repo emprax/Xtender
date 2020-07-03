@@ -3,7 +3,7 @@ A segmented visitor library to solidify the visitor pattern.
 
 [TOC]
 
-### Background
+## Background
 
 Xtender, obviously named after the ability to extend, is a library developed to solidify the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) which is used to separate an algorithm from an object structure or simply dynamically add a new algorithm to such an object.
 
@@ -19,7 +19,7 @@ What this adds to the already consistent visitor pattern are the [SOLID](https:/
 - The *Interface segregation principle*, as the interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
 - The *Dependency inversion principle*, as the library components are all depending on abstractions instead of concrete implementations.
 
-#### V1
+### V1
 
 The first version that was considered when implementing the Xtender library was the use of the Decorator Pattern. Better suited is the Chain-of-responsibility Pattern, because the Decorator is more in line with a pipeline, where every segment is executed until the leading object is reached, as where the Chain-of-responsibility Pattern determines whether a segment, as handler, is suited to do the job.
 
@@ -27,7 +27,7 @@ The first version that was considered when implementing the Xtender library was 
 
 All together a client is used that holds a reference to the root-segment in the chain and executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment, where this detection is achieved by simply doing a type check and casts the object to the specific concrete implementation it is specified to be. For a simple chain this is no problem of course, but when adding more segments to the chain, then it could grow quite fast. The complexity of this solution is of O(n).
 
-#### V2
+### V2
 
 A second version has been established to solve the aforementioned disadvantage in efficiency. The main difference with this version and the previous one is that the handlers/segments are stored in a dictionary instead of chaining them together. 
 
@@ -37,11 +37,11 @@ The dictionary, as map-like structure, is a well-known collective data-structure
 
 
 
-### Coding Guide
+## Coding Guide
 
 This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application.
 
-#### Accepter
+### Accepter
 
 The accepter is the object that can be visited/extended. It most likely would be an object that is part of a composite. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not to be abstracted away is that every concrete implementation has to provide itself to the extender so the extender can determine the right implementation it should be working on.
 
@@ -68,7 +68,7 @@ public class Composite : Component
 
 Here the composite-pattern-component implements the IAccepter interface and provide the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method.
 
-#### Extensions
+### Extensions
 
 The extensions are the segments in that each handle a concrete implementation regarding a composite.
 
@@ -96,7 +96,7 @@ public class ItemExtension : Extension<string, Component, Item>
 
 Here the ItemExtension is an example of an extension that is responsible for processing the Item implementations regarding the aforementioned composite.
 
-#### Construction
+### Construction
 
 To make life as a developer easier, the library comes with a ServiceCollection extension that can be used to easily implement the extender components and by building up the Extender client with its segments/extensions.
 
@@ -118,13 +118,18 @@ The client itself has already been defined within the library and carries the ex
 
 
 
-### Which Problems to solve
+## Which Problems to solve
 
 Possible cases to use this library:
 
-1. Using a more dynamic version of the Visitor Pattern that conforms to the SOLID design principles.
-2. When needed to traverse a tree-structure/composition where the amount of concrete component implementations could change.
-3. Recycle algorithmic components and compose a client with a custom set of combinations of these components.
-4. Using it as an intermediate layer in between the services and the domain models, where the domain models could be composed into a compositional structure. For that it is no longer a far stretch to be open minded for the idea of using the composite pattern, because the negative effects of not being able to directly access the discrete implementation of the model is mostly removed.
+- Using a more dynamic version of the Visitor Pattern that conforms to the SOLID design principles.
+
+- When needed to traverse a tree-structure/composition where the amount of concrete component implementations could change.
+
+- Recycle algorithmic components and compose a client with a custom set of combinations of these components.
+
+- Extensive validation purposes.
+
+- Using it as an intermediate layer in between the services and the domain models, where the domain models could be composed into a compositional structure. For that it is no longer a far stretch to be open minded for the idea of using the composite pattern, because the negative effects of not being able to directly access the discrete implementation of the model is mostly removed.
 
 Be aware that even though this solution is quite performant with the key-value data structure, the standard Visitor Pattern is still a good fit for more direct and easy to solve problems.
