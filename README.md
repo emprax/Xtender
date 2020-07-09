@@ -1,5 +1,7 @@
 # Xtender
-A segmented visitor library to solidify the visitor pattern.
+A segmented visitor library to solidify the visitor pattern. The background will explain the origin of the idea and the problem in regards to the SOLID design principles and further sections will explain how the approach works.
+
+Specific use-cases can be found at the end of this document within the section **Which Problems to solve** and than specifically within the subsection **Specific UseCases**.
 
 ## Table of contents
 
@@ -12,6 +14,7 @@ A segmented visitor library to solidify the visitor pattern.
     + [Extensions](#extensions)
     + [Construction](#construction)
   * [Which Problems to solve](#which-problems-to-solve)
+    * [Specific UseCases](#specific-usecases)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -169,3 +172,13 @@ Possible cases to use this library:
 - Using it as an intermediate layer in between the services and the domain models, where the domain models could be composed into a compositional structure. For that it is no longer a far stretch to be open minded for the idea of using the composite pattern, because the negative effects of not being able to directly access the discrete implementation of the model is mostly removed.
 
 Be aware that even though this solution is quite performant with the key-value data structure, the standard Visitor Pattern is still a good fit for more direct and easy to solve problems.
+
+### Specific UseCases
+
+A possible usecase for this algorithm would be something like a school-system or an health-insurance system. 
+
+- The school-system could for example house many new registered schools which signed an alignment with your school-administration application. Now consider that a lot of different schools have a lot of different layouts in, i.e., their learning paths and subject ordering to name a few instances. At that point it would be quite obvious to use the composite pattern to map all the different possible components to define a dynamically constructible school-layout modelling system so that every school registration can be established to the heart-desire of the school itself. 
+
+  Now it would be quite difficult to apply rules directly on the composite structure, so the visitor pattern would be an obvious choice to achieve accessibility. Now with multiple schools being attached at different times and school that are already registered having differentiating demands in their structures could be problematic to maintain with a simple visitor as a lot of changes have to be applied while this could also bring a lot of new problems. So a nice solution would be to use the Xtender library to solve those problems as well.
+
+- The health-insurance system would take quite a similar approach as the school-system. Now instead of school-layouts this would be the something like the layout of different policies or customizable declarations/contracts in regards to treatments for patients to be fine-grained. Consider for moment that those structures would be quite extensive as multiple hundreds of different combinations are possible. So again to apply rules, operations, validations or whatever to the structure, it would be quite useful to apply the Xtender library for this specific use-case.
