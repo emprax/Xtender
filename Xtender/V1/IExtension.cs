@@ -2,7 +2,7 @@
 
 namespace Xtender.V1
 {
-    public interface IExtension<TBaseValue>
+    public interface IExtension<TBaseValue> where TBaseValue : IAccepter<TBaseValue>
     {
         Task Extent(TBaseValue value);
 

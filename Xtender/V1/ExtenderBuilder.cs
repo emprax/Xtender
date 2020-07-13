@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Xtender.V1
 {
-    public class ExtenderBuilder<TBaseValue, TState> : IExtenderBuilder<TBaseValue, TState>
+    public class ExtenderBuilder<TBaseValue, TState> : IExtenderBuilder<TBaseValue, TState> where TBaseValue : IAccepter<TBaseValue>
     {
         private readonly IList<Func<IExtender<TBaseValue, TState>, IExtension<TBaseValue>>> segmentConfigurations;
 

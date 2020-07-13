@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Xtender.V1
 {
-    public class Extender<TBaseValue, TState> : IExtender<TBaseValue, TState>
+    public class Extender<TBaseValue, TState> : IExtender<TBaseValue, TState> where TBaseValue : IAccepter<TBaseValue>
     {
         private readonly IExtension<TBaseValue> rootSegment;
 

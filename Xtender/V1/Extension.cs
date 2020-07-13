@@ -3,7 +3,7 @@ using Xtender.V1;
 
 namespace Xtender.v1
 {
-    public abstract class Extension<TState, TBaseValue, TContext> : IExtension<TBaseValue>
+    public abstract class Extension<TState, TBaseValue, TContext> : IExtension<TBaseValue> where TBaseValue : IAccepter<TBaseValue>
     {
         protected readonly IExtender<TBaseValue, TState> extender;
         private IExtension<TBaseValue> next;

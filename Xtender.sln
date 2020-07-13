@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.DependencyInjection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Example.Console", "Xtender.Example.Console\Xtender.Example.Console.csproj", "{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Tests", "Xtender.Tests\Xtender.Tests.csproj", "{5D1261FB-0420-4A02-8A57-FE7A1152678C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D1261FB-0420-4A02-8A57-FE7A1152678C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D1261FB-0420-4A02-8A57-FE7A1152678C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D1261FB-0420-4A02-8A57-FE7A1152678C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D1261FB-0420-4A02-8A57-FE7A1152678C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

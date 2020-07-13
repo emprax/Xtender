@@ -8,7 +8,8 @@ namespace Xtender.DependencyInjection.V1
     {
         public static IServiceCollection AddXtender<TBaseValue, TState>(
             this IServiceCollection services, 
-            Func<IExtenderBuilder<TBaseValue, TState>, IServiceProvider, IExtender<TBaseValue, TState>> configuration)
+            Func<IExtenderBuilder<TBaseValue, TState>, IServiceProvider, IExtender<TBaseValue, TState>> configuration) 
+                where TBaseValue : IAccepter<TBaseValue>
         {
             return services.AddTransient(provider => configuration.Invoke(new ExtenderBuilder<TBaseValue, TState>(), provider));
         }
