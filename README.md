@@ -54,11 +54,11 @@ The dictionary, as map-like structure, is a well-known collective data-structure
 
 ## Coding Guide
 
-This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application.
+This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application. Be aware that the V2 version is a bit different.
 
 ### Accepter
 
-The accepter is the object that can be visited/extended. It most likely would be an object that is part of a composite. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not to be abstracted away is that every concrete implementation has to provide itself to the extender so the extender can determine the right implementation it should be working on.
+The accepter is the object that can be visited/extended. It most likely would be an object that is part of a composite. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not to be abstracted away is that every concrete implementation has to provide itself to the extender so the extender can determine the right implementation it should be working on. **NOTE:** This example is shown in the cleanest way possible and that is from **V2** version as the IExtender only requires to have the state being known, while the **V1** version would also like to know the base-component object.
 
 ```c#
 public abstract Component : IAccepter
@@ -81,7 +81,7 @@ public class Composite : Component
 }
 ```
 
-Here the composite-pattern-component implements the IAccepter interface and provide the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method.
+Here the composite-pattern-component implements the IAccepter interface and provide the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method. 
 
 ### Extensions
 
@@ -110,6 +110,34 @@ public class ItemExtension : Extension<string, Component, Item>
 ```
 
 Here the ItemExtension is an example of an extension that is responsible for processing the Item implementations regarding the aforementioned composite.
+
+In **V2**:
+
+```c#
+public class ItemExtension : IExtension<Item>
+{
+	private IExtender<string> extender;
+
+    public ItemExtension(IExtender<string> extender) => this.extender = extender;
+
+    public Task Extent(Item context)
+    {
+        System.Console.WriteLine("Entered ItemExtension");
+        if (base.extender.State is null)
+        {
+            base.extender.State = "Encountered an Item regarding Component.";
+        }
+        else
+        {
+            base.extender.State += "Encountered an Item regarding Component.";
+        }
+
+        return Task.CompletedTask;
+    }
+}
+```
+
+This version is quite a bit cleaner and easier to use. Furthermore, the Extension abstract-class is no longer needed but it is still provided within the library for developers who insist to use it.
 
 ### Construction
 
@@ -149,13 +177,13 @@ var composition = new Composite
 };
 
 // Getting the extender from the ServiceProvider from the DI.
-var extender = services.GetRequiredService<IExtender<Component, string>>();
+var extender = services.GetRequiredService<IExtender<Component, string>>();  // V1 version. V2 does not have the Component generic
 
 // The extension process here as adding new operations.
 await extender.Extent(composition);
 ```
 
-
+The **V2** version is nearly identical to the V1, but does not have the base-component generic, what makes it easier to be more dynamic.
 
 ## Which Problems to solve
 

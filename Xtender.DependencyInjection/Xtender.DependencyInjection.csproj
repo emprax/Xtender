@@ -8,6 +8,7 @@
     <Description>The Dependency Injection extension in regards to the Xtender library. Provides an extension method that can be used with the Microsoft Dependency Injection library.</Description>
     <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
     <PackageTags>extension,visitor,composite</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>

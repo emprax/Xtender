@@ -11,6 +11,7 @@
     <Copyright />
     <Description>Extension library based on the Visitor design pattern with the SOLID design principles kept in mind. Useful for building up custom algorithms/extensions for i.e. the traversal of composite structures. Contains two versions, V1 is using the Chain-of-Responsibility pattern and/or Decorator pattern and the second version, V2, uses a dictionary. There is another package for Dependency Injection usage.</Description>
     <PackageTags>extension,visitor,composite</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
