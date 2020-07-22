@@ -9,6 +9,7 @@
     <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
     <PackageTags>extension,visitor,composite</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
