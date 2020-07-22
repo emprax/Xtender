@@ -1,4 +1,7 @@
 # <img src=".\docs\Xtender-logo.png" style="zoom:33%;" /> Xtender
+
+![Nuget](https://img.shields.io/nuget/v/Xtender?color=green&style=plastic)
+
 A segmented visitor library to solidify the visitor pattern. The background will explain the origin of the idea and the problem in regards to the SOLID design principles and further sections will explain how the approach works.
 
 Specific use-cases can be found at the end of this document within the section **Which Problems to solve** and than specifically within the subsection **Specific UseCases**.
