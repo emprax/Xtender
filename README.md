@@ -8,9 +8,9 @@ NuGet package pages:
 
 ## Introduction
 
-A segmented visitor library to solidify the visitor pattern. The background will explain the origin of the idea and the problem in regards to the SOLID design principles and further sections will explain how the approach works.
+A library regarding a segmented visitor to solidify the visitor pattern. The background will explain the origin of the idea and the problem in regards to the SOLID design principles and further sections will explain how the approach works.
 
-Specific use-cases can be found at the end of this document within the section **Which Problems to solve** and than specifically within the subsection **Specific UseCases**.
+Specific use-cases can be found at the end of this document within the section [**Which Problems to solve**](#which-problems-to-solve) and than specifically within the subsection [**Specific UseCases**](#specific-usecases).
 
 ## Table of contents
 
@@ -29,18 +29,18 @@ Specific use-cases can be found at the end of this document within the section *
 
 ## Background
 
-Xtender, obviously named after the ability to extend, is a library developed to solidify the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) which is used to separate an algorithm from an object structure or simply dynamically add a new algorithm to such an object.
+Xtender, obviously named after the ability to extend, is a library developed to solidify (conform to SOLID) the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) which is used to separate an algorithm from an object structure or simply flexibly adding a new algorithm to such an object.
 
-Where the visitor pattern consists mostly of a single class containing the *Visit* methods for every concrete type in the object structure, the segmented visitor pattern separate this class into segments where each segment defines a Visit method for a dedicated concrete type.
+Where the visitor pattern consists mostly of a single class containing the *Visit* methods for every concrete type in the object structure, the segmented visitor pattern separate this class into segments. Each segment defines a Visit method for a dedicated concrete type.
 
 ![Visitor](docs/Visitor.png)
 
 What this adds to the already consistent visitor pattern are the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles, which most notably are:
 
-- The *Single-responsibility principle*, as every segments handles an operation for a single concrete type.
-- The *Open-closed principle*, as when the object structure is extended with more concrete types, then the visitor structure is simply extended to add a new segment to the collection instead of modifying a class.
-- The *Liskov substitution principle*, as the abstractions of the segments are simple and generic enough that the abstraction works for every type of segment that is added. The segment abstraction does not contain more methods or data than what every segment has in common with one-another.
-- The *Interface segregation principle*, as the interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
+- The *Single-responsibility principle*, as every segment handles an operation for a single concrete type.
+- The *Open-closed principle*, to the point that when the object structure is extended with more concrete types, then the visitor structure is simply extended to add a new segment to the collection instead of modifying a class.
+- The *Liskov substitution principle*, as the abstractions of the segments are simple and generic enough that the abstraction works for every type of segment that is added to the structure. The segment abstraction does not contain more methods or data than what every segment has in common with one-another.
+- The *Interface segregation principle*, to the point that the interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
 - The *Dependency inversion principle*, as the library components are all depending on abstractions instead of concrete implementations.
 
 ### V1
@@ -49,7 +49,7 @@ The first version that was considered when implementing the Xtender library was 
 
 ![Xtender-V1](docs/Xtender-V1.png)
 
-All together a client is used that holds a reference to the root-segment in the chain and executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment, where this detection is achieved by simply doing a type check and casts the object to the specific concrete implementation it is specified to be. For a simple chain this is no problem of course, but when adding more segments to the chain, then it could grow quite fast. The complexity of this solution is of O(n).
+All together a client is used that holds a reference to the root-segment in the chain and executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment. This detection is achieved by simply doing a type check and casts the object to the specific concrete implementation it is specified to be. For a simple chain this is no problem of course, but when adding more segments to the chain, it could grow quite fast. The complexity of this solution is of O(n).
 
 ### V2
 
@@ -57,7 +57,7 @@ A second version has been established to solve the aforementioned disadvantage i
 
 ![Xtender-V2](docs/Xtender-V2.png)
 
-The dictionary, as map-like structure, is a well-known collective data-structure that can save a value on a location that is linked to a key, where the key can be of any data-type and calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing complexity.
+The dictionary, as map-like structure implemented with a hash-map, is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing complexity.
 
 
 
@@ -67,7 +67,7 @@ This section emphasizes the important components of the library on the basis of 
 
 ### Accepter
 
-The accepter is the object that can be visited/extended. It most likely would be an object that is part of a composite. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not to be abstracted away is that every concrete implementation has to provide itself to the extender so the extender can determine the right implementation it should be working on. **NOTE:** This example is shown in the cleanest way possible and that is from **V2** version as the IExtender only requires to have the state being known, while the **V1** version would also like to know the base-component object.
+The accepter is the object that can be visited/extended. In most cases this would be an object that is part of a composite structure. The base of the composite should define that the concrete implementations would each define an Accept(...) method that accepts the extender. The reason for this not being abstracted away is that every concrete implementation has to provide itself to the extender, so that the extender can determine the right implementation it should be working on. **NOTE:** This example is shown in the cleanest way possible. It depicts an example regarding the use of the **V2** version as the IExtender only requires to have the state being known, while the **V1** version would also like to know the base-component object.
 
 ```c#
 public abstract Component : IAccepter
@@ -90,11 +90,11 @@ public class Composite : Component
 }
 ```
 
-Here the composite-pattern-component implements the IAccepter interface and provide the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method. 
+Here the composite-pattern component implements the IAccepter interface and provides the Accept(...) method regarding the interface as an abstract method, so the implementations (Item, Composite) can implement the method. 
 
 ### Extensions
 
-The extensions are the segments in that each handle a concrete implementation regarding a composite.
+The extensions are the segments in that each handles a concrete implementation regarding a composite.
 
 ```c#
 public class ItemExtension : Extension<string, Component, Item>
@@ -118,14 +118,14 @@ public class ItemExtension : Extension<string, Component, Item>
 }
 ```
 
-Here the ItemExtension is an example of an extension that is responsible for processing the Item implementations regarding the aforementioned composite.
+Here the ItemExtension is an example of an extension that is responsible for processing the Item implementations regarding the aforementioned composite from the previous section.
 
 In **V2**:
 
 ```c#
 public class ItemExtension : IExtension<Item>
 {
-	private IExtender<string> extender;
+    private IExtender<string> extender;
 
     public ItemExtension(IExtender<string> extender) => this.extender = extender;
 
@@ -146,7 +146,7 @@ public class ItemExtension : IExtension<Item>
 }
 ```
 
-This version is quite a bit cleaner and easier to use. Furthermore, the Extension abstract-class is no longer needed but it is still provided within the library for developers who insist to use it.
+This version is a bit cleaner and easier to use. Furthermore, the Extension abstract-class is no longer needed but it is still provided within the library for developers who insist on using it.
 
 ### Construction
 
@@ -164,9 +164,9 @@ var services = new ServiceCollection()
     .BuildServiceProvider();
 ```
 
-Here both the aforementioned ItemExtension and the CompositeExtension are being linked by the builder object and the extender can be created by simply calling Build(). The extensions themselves are being constructed this way to ensure that they perserve update-to-date dependencies (dependencies with a short lifetime and/or specific temporary data should be retrieved in update-to-date form and should not be inserted while disposed). The IServiceProvider can be used next to the builder to determine the extension dependencies. 
+Here both the aforementioned ItemExtension and the CompositeExtension are linked to the extender by the builder object and the extender can be created by simply calling Build(). The extensions themselves are constructed this way to ensure that they preserve update-to-date dependencies (dependencies with a short lifetime and/or specific temporary data should be retrieved in update-to-date form and should not be inserted while disposed). The IServiceProvider (marked as *provider* in the example) can be used next to the builder to determine the extension dependencies. 
 
-The client itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is being determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, in the old situation, have been preserved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
+The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, in the old situation, have been preserved by the Visitor Pattern its own visitor class and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
 
 ```C#
 // An example composition.
@@ -192,17 +192,17 @@ var extender = services.GetRequiredService<IExtender<Component, string>>();  // 
 await extender.Extent(composition);
 ```
 
-The **V2** version is nearly identical to the V1, but does not have the base-component generic, what makes it easier to be more dynamic.
+The **V2** version is nearly identical to the V1, but does not provide the base-component with a generic parameter, what makes it easier to be more dynamic.
 
 ## Which Problems to solve
 
-Possible cases to use this library:
+Possible cases for which this library can be used:
 
-- Using a more dynamic version of the Visitor Pattern that conforms to the SOLID design principles.
+- Using a more dynamic version of the Visitor Pattern that conforms more to the SOLID design principles.
 
 - When needed to traverse a tree-structure/composition where the amount of concrete component implementations could change.
 
-- Recycle algorithmic components and compose a client with a custom set of combinations of these components.
+- Recycle algorithmic components and compose a client (*extender*) with a custom set of combinations of these components.
 
 - Extensive validation purposes.
 
@@ -212,10 +212,10 @@ Be aware that even though this solution is quite performant with the key-value d
 
 ### Specific UseCases
 
-A possible usecase for this algorithm would be something like a school-system or an health-insurance system. 
+A possible use-case for this algorithm would be something like a school-system or an health-insurance system. 
 
-- The school-system could for example house many new registered schools which signed an alignment with your school-administration application. Now consider that a lot of different schools have a lot of different layouts in, i.e., their learning paths and subject ordering to name a few instances. At that point it would be quite obvious to use the composite pattern to map all the different possible components to define a dynamically constructible school-layout modelling system so that every school registration can be established to the heart-desire of the school itself. 
+- The school-system could for example house many new registered schools which signed an alignment with your school-administration application. Now consider that a lot of different schools have a lot of different layouts in, i.e., their learning paths and subject ordering to name a few instances. At that point it would be quite obvious to use the composite pattern to map all the different possible components to define a varying constructible school-layout modelling system so that every school registration can be established to the heart-desire of the school itself. 
 
-  Now it would be quite difficult to apply rules directly on the composite structure, so the visitor pattern would be an obvious choice to achieve accessibility. Now with multiple schools being attached at different times and school that are already registered having differentiating demands in their structures could be problematic to maintain with a simple visitor as a lot of changes have to be applied while this could also bring a lot of new problems. So a nice solution would be to use the Xtender library to solve those problems as well.
+  Now it would be quite difficult to apply rules directly on the composite structure, so the visitor pattern would be an obvious choice to achieve accessibility. Now with multiple schools being attached at different times and schools that are already registered having differentiating demands in their structures could be problematic to maintain with a simple visitor. That has to do with a lot of changes that have to be applied, while this could also bring a lot of new problems. So a nice solution would be to use the Xtender library to solve those problems as well.
 
-- The health-insurance system would take quite a similar approach as the school-system. Now instead of school-layouts this would be the something like the layout of different policies or customizable declarations/contracts in regards to treatments for patients to be fine-grained. Consider for moment that those structures would be quite extensive as multiple hundreds of different combinations are possible. So again to apply rules, operations, validations or whatever to the structure, it would be quite useful to apply the Xtender library for this specific use-case.
+- The health-insurance system would take quite a similar approach as the school-system. Now instead of school-layouts this would be the something like the layout of different policies or customizable declarations/contracts in regards to treatments for patients that can be more fine-grained and flexible. Consider for moment that those structures would be quite extensive as multiple hundreds of different combinations are possible. So again to apply rules, operations, validations or whatever to the structure, it would be quite useful to apply the Xtender library for this specific use-case.
