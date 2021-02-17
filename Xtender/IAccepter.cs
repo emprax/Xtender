@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Xtender.V2
+namespace Xtender
 {
     public interface IAccepter
     {

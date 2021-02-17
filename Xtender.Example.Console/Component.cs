@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xtender.V2;
 
-namespace Xtender.Example.Console.V2
+namespace Xtender.Example.Console
 {
     public abstract class Component : IAccepter
     {
