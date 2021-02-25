@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net50</TargetFrameworks>
     <Authors>Emprax</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Xtender-logo.png</PackageIcon>
@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
     <PackageTags>extension,visitor,composite</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
