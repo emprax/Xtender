@@ -14,16 +14,16 @@ A library regarding a segmented visitor to solidify the visitor pattern. The ori
 
 Specific use-cases can be found within the section [**Which Problems to solve**](#which-problems-to-solve) and than specifically within the subsection [**Possible UseCases**](#possible-usecases).
 
-| :exclamation: ANOTHER NOTE​                                   |
-| ------------------------------------------------------------ |
+| :exclamation: NOTE​                                   |
+| :------------------------------------------------------------ |
 | The current version of the software is drastically different from where it all began. The V1/V2 approach is no longer available as the V2 approach has been appointed to be the standard for this library. Note that the library has undertaken a major overhaul. For older version, inspect the [README_(old-version).md](docs/README_(old-version).md) |
 
 | :exclamation: ANOTHER NOTE​                                   |
-| ------------------------------------------------------------ |
+| :------------------------------------------------------------ |
 | Be aware of the other **NOTE**s in the document, it contains some pretty specific details that can help a lot with developing and answering questions. |
 
 | :warning: WARNING                                            |
-| ------------------------------------------------------------ |
+| :------------------------------------------------------------ |
 | There is a section in this document explaining about a feature to apply certain actions on abstract-classes which could pose a possible threat in that it is possible to get into an infinite loop. |
 
 
