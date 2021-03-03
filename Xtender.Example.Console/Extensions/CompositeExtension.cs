@@ -4,7 +4,7 @@ namespace Xtender.Example.Console
 {
     public class CompositeExtension : IExtension<string, Composite>
     {
-        public async Task Extent(Composite context, IExtender<string> extender)
+        public async Task Extend(Composite context, IExtender<string> extender)
         {
             System.Console.WriteLine("Entered CompositeExtension");
             if (extender.State is null)

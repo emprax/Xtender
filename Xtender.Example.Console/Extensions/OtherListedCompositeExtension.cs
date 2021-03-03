@@ -7,7 +7,7 @@ namespace Xtender.Example.Console
     {
         public class OtherListedCompositeExtension : IExtension<IList<string>, Composite>
         {
-            public async Task Extent(Composite context, IExtender<IList<string>> extender)
+            public async Task Extend(Composite context, IExtender<IList<string>> extender)
             {
                 extender.State.Add(" - This is something else ;).");
                 foreach (var component in context.Components)

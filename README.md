@@ -1,3 +1,5 @@
+
+
 # <img src=".\docs\Xtender-logo.png" style="zoom:33%;" /> Xtender
 
 ![Nuget](https://img.shields.io/nuget/v/Xtender?color=green&style=plastic)
@@ -12,9 +14,19 @@ A library regarding a segmented visitor to solidify the visitor pattern. The ori
 
 Specific use-cases can be found within the section [**Which Problems to solve**](#which-problems-to-solve) and than specifically within the subsection [**Possible UseCases**](#possible-usecases).
 
-**NOTE:** The current version of the software is drastically different from where it all began. The V1/V2 approach is no longer available as the V2 approach has been appointed to be the standard for this library. Note that the library has undertaken a major overhaul. For older version, inspect the [README_(old-version).md](docs/README_(old-version).md)
+| :exclamation: ANOTHER NOTE​                                   |
+| ------------------------------------------------------------ |
+| The current version of the software is drastically different from where it all began. The V1/V2 approach is no longer available as the V2 approach has been appointed to be the standard for this library. Note that the library has undertaken a major overhaul. For older version, inspect the [README_(old-version).md](docs/README_(old-version).md) |
 
-**ANOTHER NOTE:** Be aware of the other **NOTE**s in the document, it contains some pretty specific details that can help a lot with developing and answering questions.
+| :exclamation: ANOTHER NOTE​                                   |
+| ------------------------------------------------------------ |
+| Be aware of the other **NOTE**s in the document, it contains some pretty specific details that can help a lot with developing and answering questions. |
+
+| :warning: WARNING                                            |
+| ------------------------------------------------------------ |
+| There is a section in this document explaining about a feature to apply certain actions on abstract-classes which could pose a possible threat in that it is possible to get into an infinite loop. |
+
+
 
 ## Table of contents
 
@@ -37,7 +49,9 @@ Xtender, obviously named after the ability to extend, is a library developed to 
 
 Where the visitor pattern consists mostly of a single class containing the *Visit* methods for every concrete type in the object structure, the segmented visitor pattern separate this class into segments. Each segment (defined by an abstract definition) defines a *Visit* method that has to be implemented by a dedicated concrete type. This concrete type can then be visited and could be extended through applying some additional logic provided by the visitor segment.
 
-**NOTE:** Be aware that at the start the visitor is always passed to the *Accept* method of the to be visitable object. That is because the *Visit* method of the visitor contains concrete types and because when an abstraction is pass to the visitor, it will probably not have an overloaded *Visit* method for it. However, there could be one, but that would be a default case here.
+| :exclamation: NOTE​                                           |
+| ------------------------------------------------------------ |
+| Be aware that at the start the visitor is always passed to the *Accept* method of the to be visit-able object. That is because the *Visit* method of the visitor contains concrete types and because when an abstraction is pass to the visitor, it will probably not have an overloaded *Visit* method for it. However, there could be one, but that would be a default case here. |
 
 ![Visitor](docs/Visitor.png)
 
@@ -45,7 +59,7 @@ What this adds to the already consistent visitor pattern are improvements to adh
 
 - **Single-responsibility principle**: Every segment handles an operation for a single concrete type.
 - **Open-closed principle**: When the object structure, consisting of some objects with a common parent, is extended with more concrete typed objects, the visitor structure could simply be extended to add a new segment to the collection of visitor segments instead of modifying the visitor class.
-- **Liskov substitution principle**: The abstractions of the segments are simple and generic enough that this abstraction works perfectly as a basis for every type of segment that is added to the structure. The segment abstraction does not contain more methods or data than what every segment has in common with one-another.
+- **Liskov's substitution principle**: The abstractions of the segments are simple and generic enough that this abstraction works perfectly as a basis for every type of segment that is added to the structure. The segment abstraction does not contain more methods or data than what every segment has in common with one-another.
 - **Interface segregation principle**: The interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
 - **Dependency inversion principle**: The library components are all depending on abstractions instead of concrete implementations.
 
@@ -122,9 +136,9 @@ public class ItemExtension : IExtension<Item>
 
 Here the ItemExtension is an example of an extension that is responsible for processing the *Item* implementations.
 
-**NOTE:** The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The developer can should to reapply the extender/visitor to further extent/visit other components.
-
-
+| :exclamation: NOTE​                                           |
+| ------------------------------------------------------------ |
+| The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The developer can should to reapply the extender/visitor to further extent/visit other components. |
 
 ### Construction
 
@@ -143,6 +157,21 @@ var serviceProvider = new ServiceCollection()
 ```
 
 Here both the aforementioned ItemExtension and the CompositeExtension are linked to the extender by the builder object. The extensions themselves are constructed this way to ensure that they preserve update-to-date dependencies (dependencies with a short lifetime and/or specific temporary data should be retrieved in update-to-date form and should not be inserted while disposed). The IServiceProvider (marked as *provider* in the example) can be used next to the builder to determine the extension dependencies.
+
+:exclamation::warning: **<span style='color:red'>WARNING:</span>**
+
+> You could also apply the *WithAbstractAccepterHandling* method in the registration on the IExtenderBuilder<TState>, this would ensure that when an abstraction is passed to the extender, it is verified and called with its *Accept* method. So in this case you can start the flow with passing the accepter to the extender in cases when the other way around is not possible. 
+>
+> **<span style='color:red'>However a few possible dangers :boom: arise:</span>**
+>
+> - **<span style='color:red'>Infinite looping:</span>** When the abstract class implements the *Accept* method or another abstract class inherits from the previous one, then it could be possible, when there are no implementations, that the extender continuously calls the abstract-accepter-handling mechanism. This could cause infinite recursive looping. (*However it is highly unlikely to occur, it is still possible*).
+> - **<span style='color:red'>Overhead:</span>** A bunch of type reflection operations are applied, so this could cause quite some processing overhead.
+>
+> It is the best practice to: **<span style='color:blue'>Always initiate an extender flow by passing the extender to the *Accept* method over the targeted accepter.</span>** This is also where the name *Accepter* comes from.
+>
+> Try to omit using the *WithAbstractAccepterHandling* mechanism. Only use it when there is no other way and when you know what you are doing.
+
+
 
 **Notice:**
 
@@ -173,12 +202,17 @@ var serviceProvider = new ServiceCollection()
 
 ​		OrderCreateRequest is used here to function as an object of state for the visitor/extender and the extensions can choose to modify it. What happens     		here is that the factory is created and two extenders are being build up, both using the same type of state. The difference with this and the single 		registration example, seen above, is that these here are not dependent on a singleton core. The cores created for these extenders are stored with 		the factory. Although, the extenders are not singleton dependent, the ExtenderFactory is. The names given within the registrations for the extenders 		(*"build-up"* and *"attachments"*) are functioning as keys for which these extenders are stored within the ExtenderFactory (the factory utilizes a 				  		dictionary to find specific lambda's by key as factories that create the extenders). The keys can then be used to query the factory for the creation of 		the right extender setup. The keys are strings because the first of the generics given for *AddXtenderFactory* describes the key-type.
 
-​		**NOTE:** The builders for the extenders in this example all utilize the *Default* method without generic. This will provide the respected extender with a 		really default (do-nothing) type of default-extension. This is the so-called *DefaultExtension<TState>* that is provided out of the box by the Xtender 		library.
+| :exclamation: NOTE​                                           |
+| ------------------------------------------------------------ |
+| The builders for the extenders in this example all utilize the *Default* method without generic. This will provide the respected extender with a 		really default (do-nothing) type of default-extension. This is the so-called *DefaultExtension<TState>* that is provided out of the box by the Xtender library. |
 
 - Attach methods have to give both the context type and the extension type. The context type is the concrete type/implementation type or whatever object that implements the *IAccepter* interface and has to be visited/extended by this extender.
-- **NOTE:** Always pass *Extender* to *Accepter*. The other way around, the *Extender* cannot find the right type for the *Accepter* and will utilize the default extension. That is how it is supposed to work, because a visitor of the Visitor Pattern also only has implementation specific *Visit* method. When you still want to proceed with passing *Accepter* to *Extender* at the start, then at least **cast** that type.
 
-The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TAccepter, TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, when using the standard Visitor Pattern, have been preserved by the visitor class itself and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
+- | :exclamation: NOTE​                                           |
+  | ------------------------------------------------------------ |
+  | Always pass *Extender* to *Accepter*. The other way around, the *Extender* cannot find the right type for the *Accepter* and will utilize the default extension. That is how it is supposed to work, because a visitor of the Visitor Pattern also only has implementation specific *Visit* method. When you still want to proceed with passing *Accepter* to *Extender* at the start, then at least **cast** that type. |
+
+The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, when using the standard Visitor Pattern, have been preserved by the visitor class itself and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
 
 ```C#
 // An example composition.
@@ -200,7 +234,7 @@ var composition = new Composite
 // Getting the extender from the ServiceProvider from the DI.
 var extender = services.GetRequiredService<IExtender<string>>();
 
-// The extension process here as adding new operations. NOTE: Always pass Extender to Accepter.
+// The extension process here as adding new operations. NOTE: Best practice is to always pass Extender to Accepter.
 await composition.Accept(extender);
 ```
 

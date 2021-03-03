@@ -4,7 +4,7 @@ namespace Xtender.Example.Console
 {
     public class ItemExtension : IExtension<string, Item>
     {
-        public Task Extent(Item _, IExtender<string> extender)
+        public Task Extend(Item _, IExtender<string> extender)
         {
             System.Console.WriteLine("Entered ItemExtension");
             if (extender.State is null)

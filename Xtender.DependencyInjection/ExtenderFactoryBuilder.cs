@@ -23,9 +23,11 @@ namespace Xtender.DependencyInjection
             }
 
             var cores = new ConcurrentDictionary<string, Func<object>>();
-            configuration.Invoke(new ExtenderBuilder<TState>(cores, this.provider));
+            var builder = new ExtenderBuilder<TState>(cores, this.provider);
 
-            this.extenders.Add(key, () => new ExtenderCore<TState>(cores));
+            configuration.Invoke(builder);
+            this.extenders.Add(key, () => new ExtenderCore<TState>(cores, builder.CreateAbstractHandler()));
+
             return this;
         }
     }

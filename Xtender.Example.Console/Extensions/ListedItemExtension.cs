@@ -7,7 +7,7 @@ namespace Xtender.Example.Console
     {
         public class ListedItemExtension : IExtension<IList<string>, Item>
         {
-            public Task Extent(Item context, IExtender<IList<string>> extender)
+            public Task Extend(Item context, IExtender<IList<string>> extender)
             {
                 extender.State.Add(" - Welcome to the Item-extension.");
                 return Task.CompletedTask;

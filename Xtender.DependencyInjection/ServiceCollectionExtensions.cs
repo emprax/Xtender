@@ -6,19 +6,39 @@ namespace Xtender.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// AddXtender, to register a new Extender. Note that the extender is transient, but the ExtenderCore is registered singleton.
+        /// </summary>
+        /// <typeparam name="TState">Type of the visitor-state.</typeparam>
+        /// <param name="services">IServiceCollection.</param>
+        /// <param name="configuration">To setup the Extender.</param>
+        /// <returns>IServiceCollection.</returns>
         public static IServiceCollection AddXtender<TState>(this IServiceCollection services, Action<IExtenderBuilder<TState>, IServiceProvider> configuration)
         {
             return services
-                .AddTransient<IExtender<TState>>(provider => new Extender<TState>(provider.GetRequiredService<IExtenderCore<TState>>().Provider))
+                .AddTransient<IExtender<TState>>(provider => 
+                {
+                    var core = provider.GetRequiredService<IExtenderCore<TState>>();
+                    return new Extender<TState>(core.Provider, core.Handler);
+                })
                 .AddSingleton<IExtenderCore<TState>>(provider => 
                 {
                     var cores = new ConcurrentDictionary<string, Func<object>>();
-                    configuration.Invoke(new ExtenderBuilder<TState>(cores, provider), provider);
+                    var builder = new ExtenderBuilder<TState>(cores, provider);
 
-                    return new ExtenderCore<TState>(cores);
+                    configuration.Invoke(builder, provider);
+                    return new ExtenderCore<TState>(cores, builder.CreateAbstractHandler());
                 });
         }
 
+        /// <summary>
+        /// AddXtenderFactory, to register a new ExtenderFactory given a key-type and state-type. Note that the ExtenderFactory is registered singletone. The ExtenderCors are internally stored and Extenders are created by using their corresponding cores.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the search-key to identify the right Extender in the ExtenderFactory.</typeparam>
+        /// <typeparam name="TState">Type of the visitor-state.</typeparam>
+        /// <param name="services">IServiceCollection.</param>
+        /// <param name="configuration">To setup the ExtenderFactory.</param>
+        /// <returns>IServiceCollection.</returns>
         public static IServiceCollection AddXtenderFactory<TKey, TState>(this IServiceCollection services, Action<IExtenderFactoryBuilder<TKey, TState>, IServiceProvider> configuration)
         {
             return services.AddSingleton<IExtenderFactory<TKey, TState>>(provider =>

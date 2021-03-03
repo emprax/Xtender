@@ -10,13 +10,13 @@ namespace Xtender.Example.Console
 
     public class Item : Component
     {
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
     }
 
     public class Composite : Component
     {
         public IList<Component> Components { get; set; }
 
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
     }
 }
