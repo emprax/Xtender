@@ -20,8 +20,8 @@ Specific use-cases can be found within the section [**Which Problems to solve**]
 
 - [Xtender](#xtender)
   * [Background](#background)
-    + [V1](#v1)
-    + [V2](#v2)
+    + [Chain-based](#chain-based)
+    + [Hash-map based](#hash-map-based)
   * [Coding Guide](#coding-guide)
     + [Accepter](#accepter)
     + [Extensions](#extensions)
@@ -49,21 +49,21 @@ What this adds to the already consistent visitor pattern are improvements to adh
 - **Interface segregation principle**: The interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
 - **Dependency inversion principle**: The library components are all depending on abstractions instead of concrete implementations.
 
-### V1
+### Chain-based
 
-The first version that was considered when implementing the Xtender library was the use of the Decorator Pattern. Better suited is the Chain-of-responsibility Pattern, because the Decorator is more in line with a pipeline, where every segment is executed until the leading object is reached, as where the Chain-of-responsibility Pattern determines whether a segment, as handler, is suited to do the job.
+The first version that was considered when implementing the Xtender library has been the use of the Decorator Pattern/Chain-of-responsibility Pattern, because of its pipeline and handler-segments approach. It provides a natural way of extension by linking the segments and check the input.
 
 ![Xtender-V1](docs/Xtender-V1.png)
 
-All together a client is used that holds a reference to the root-segment in the chain. It executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment. This detection is achieved by doing a type check and casts the object to the specific concrete implementation it is specified to be. For a simple chain this is no problem of course, but when adding more segments to the chain, it could grow quite fast. The complexity of this solution is of O(n).
+It comes down to an approach where a client is used that holds a reference to the root-segment in the chain. It executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment. This detection is achieved by doing a type check, and when matching, casting the object to the specific concrete implementation it is specified to be. For a short chain there is no major problem in this approach, although, when adding more segments to the chain, it takes longer on average to find the matching segment. The complexity of this solution is therefore of O(n). It has the tendency to move away from a constant effeciency.
 
-### V2
+### Hash-map based
 
 A second version has been established to solve the aforementioned disadvantage in efficiency. The main difference with this version and the previous one is that the handlers/segments are stored in a dictionary instead of chaining them together. 
 
 ![Xtender-V2](docs/Xtender-V2.png)
 
-The dictionary (as map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced with the V1 version.
+The dictionary (as map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and the dictionary calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced by the chain-based version.
 
 
 
