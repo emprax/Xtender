@@ -50,7 +50,7 @@ Xtender, obviously named after the ability to extend, is a library developed to 
 Where the visitor pattern consists mostly of a single class containing the *Visit* methods for every concrete type in the object structure, the segmented visitor pattern separate this class into segments. Each segment (defined by an abstract definition) defines a *Visit* method that has to be implemented by a dedicated concrete type. This concrete type can then be visited and could be extended through applying some additional logic provided by the visitor segment.
 
 | :exclamation: NOTE​                                           |
-| ------------------------------------------------------------ |
+| :------------------------------------------------------------ |
 | Be aware that at the start the visitor is always passed to the *Accept* method of the to be visit-able object. That is because the *Visit* method of the visitor contains concrete types and because when an abstraction is pass to the visitor, it will probably not have an overloaded *Visit* method for it. However, there could be one, but that would be a default case here. |
 
 ![Visitor](docs/Visitor.png)
@@ -137,7 +137,7 @@ public class ItemExtension : IExtension<Item>
 Here the ItemExtension is an example of an extension that is responsible for processing the *Item* implementations.
 
 | :exclamation: NOTE​                                           |
-| ------------------------------------------------------------ |
+| :------------------------------------------------------------ |
 | The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The developer can should to reapply the extender/visitor to further extent/visit other components. |
 
 ### Construction
@@ -203,13 +203,13 @@ var serviceProvider = new ServiceCollection()
 ​		OrderCreateRequest is used here to function as an object of state for the visitor/extender and the extensions can choose to modify it. What happens     		here is that the factory is created and two extenders are being build up, both using the same type of state. The difference with this and the single 		registration example, seen above, is that these here are not dependent on a singleton core. The cores created for these extenders are stored with 		the factory. Although, the extenders are not singleton dependent, the ExtenderFactory is. The names given within the registrations for the extenders 		(*"build-up"* and *"attachments"*) are functioning as keys for which these extenders are stored within the ExtenderFactory (the factory utilizes a 				  		dictionary to find specific lambda's by key as factories that create the extenders). The keys can then be used to query the factory for the creation of 		the right extender setup. The keys are strings because the first of the generics given for *AddXtenderFactory* describes the key-type.
 
 | :exclamation: NOTE​                                           |
-| ------------------------------------------------------------ |
+| :------------------------------------------------------------ |
 | The builders for the extenders in this example all utilize the *Default* method without generic. This will provide the respected extender with a 		really default (do-nothing) type of default-extension. This is the so-called *DefaultExtension<TState>* that is provided out of the box by the Xtender library. |
 
 - Attach methods have to give both the context type and the extension type. The context type is the concrete type/implementation type or whatever object that implements the *IAccepter* interface and has to be visited/extended by this extender.
 
 - | :exclamation: NOTE​                                           |
-  | ------------------------------------------------------------ |
+  | :------------------------------------------------------------ |
   | Always pass *Extender* to *Accepter*. The other way around, the *Extender* cannot find the right type for the *Accepter* and will utilize the default extension. That is how it is supposed to work, because a visitor of the Visitor Pattern also only has implementation specific *Visit* method. When you still want to proceed with passing *Accepter* to *Extender* at the start, then at least **cast** that type. |
 
 The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, when using the standard Visitor Pattern, have been preserved by the visitor class itself and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
