@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net50</TargetFrameworks>
     <Authors>Emprax</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <PackageIcon>Xtender-logo.png</PackageIcon>
     <Description>The Dependency Injection extension in regards to the Xtender library. Provides an extension method that can be used with the Microsoft Dependency Injection library.</Description>
     <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
     <PackageTags>extension,visitor,composite</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.2.0</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,10 @@
 
   <ItemGroup>
     <None Include="..\docs\Xtender-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
