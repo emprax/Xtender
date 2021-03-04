@@ -9,13 +9,10 @@ namespace Xtender.DependencyInjection
         private readonly IDictionary<string, Func<object>> extensions;
         private readonly IServiceProvider provider;
 
-        private bool handleAbstraction;
-
         internal ExtenderBuilder(IDictionary<string, Func<object>> extensions, IServiceProvider provider)
         {
             this.extensions = extensions;
             this.provider = provider;
-            this.handleAbstraction = false;
         }
 
         public IConnectedExtenderBuilder<TState> Default<TDefaultExtension>() where TDefaultExtension : class, IExtension<TState, object>
@@ -46,13 +43,5 @@ namespace Xtender.DependencyInjection
             this.extensions.Add(typeof(object).FullName, () => new DefaultExtension<TState>());
             return new ConnectedExtenderBuilder<TState>(this.extensions, this.provider);
         }
-
-        public IExtenderBuilder<TState> WithAbstractAccepterHandling()
-        {
-            this.handleAbstraction = true;
-            return this;
-        }
-
-        internal IExtenderAbstractionHandler<TState> CreateAbstractHandler() => new ExtenderAbstractionHandler<TState>(this.handleAbstraction);
     }
 }

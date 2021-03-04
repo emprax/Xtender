@@ -3,9 +3,7 @@
 namespace Xtender
 {
     /// <summary>
-    /// The interface for implementing the extender is the visitor itself and contains the extensions that have registered for it.
-    ///   - WARNING: Can be setup with an ExtenderAbstractionHandler, which enables the possiblity to visit the concrete implementation of an abstract class, however, it is not guaranteed to work without the right registration and possible eternal looping. Be careful with enabling this.
-    ///   - IMPORTANT: The best practice is to start a process by inputting the extender into the accepter, so than the use for ExtenderAbstractionHandler is not needed at all.
+    /// The interface for implementing the extender is the visitor itself and contains the extensions that have registered for it. A proxy-extender is used to be passed to the extensions, this enables extandability.
     /// </summary>
     /// <typeparam name="TState">Type of the visitor-state.</typeparam>
     public interface IExtender<TState>

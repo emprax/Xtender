@@ -14,14 +14,8 @@ namespace Xtender.Tests.Units
         {
             // Arrange
             var extensions = new Dictionary<string, Func<object>>();
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
-
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             // Act
             var exception = await Assert
@@ -37,20 +31,14 @@ namespace Xtender.Tests.Units
         {
             // Arrange
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
-
             var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
             {
                 [typeof(TestItem).FullName] = null,
                 [typeof(object).FullName] = () => defaultExtension
             });
 
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             Mock.Get(defaultExtension)
                 .Setup(d => d.Extend(component, extender))
@@ -65,20 +53,14 @@ namespace Xtender.Tests.Units
         {
             // Arrange
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
-
             var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
             {
                 [typeof(TestItem).FullName] = () => null,
                 [typeof(object).FullName] = () => defaultExtension
             });
 
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             Mock.Get(defaultExtension)
                 .Setup(d => d.Extend(component, extender))
@@ -94,7 +76,6 @@ namespace Xtender.Tests.Units
             // Arrange
             var concreteExtension = Mock.Of<IExtension<string, string>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
 
             var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
             {
@@ -102,12 +83,8 @@ namespace Xtender.Tests.Units
                 [typeof(object).FullName] = () => defaultExtension
             });
 
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             Mock.Get(defaultExtension)
                 .Setup(d => d.Extend(component, extender))
@@ -123,7 +100,6 @@ namespace Xtender.Tests.Units
             // Arrange
             var concreteExtension = Mock.Of<IExtension<string, TestCollection>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
 
             var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
             {
@@ -131,12 +107,8 @@ namespace Xtender.Tests.Units
                 [typeof(object).FullName] = () => defaultExtension
             });
 
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             Mock.Get(defaultExtension)
                 .Setup(d => d.Extend(component, extender))
@@ -152,20 +124,15 @@ namespace Xtender.Tests.Units
             // Arrange
             var concreteExtension = Mock.Of<IExtension<string, TestItem>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var handler = Mock.Of<IExtenderAbstractionHandler<string>>();
-
+            
             var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
             {
                 [typeof(TestItem).FullName] = () => concreteExtension,
                 [typeof(object).FullName] = () => defaultExtension
             });
 
-            var extender = new Extender<string>(extensions, handler);
+            var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
-
-            Mock.Get(handler)
-                .Setup(h => h.Handle(component, extender, extensions))
-                .ReturnsAsync(false);
 
             Mock.Get(concreteExtension)
                 .Setup(d => d.Extend(component, extender))

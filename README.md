@@ -22,10 +22,6 @@ Specific use-cases can be found within the section [**Which Problems to solve**]
 | :------------------------------------------------------------ |
 | Be aware of the other **NOTE**s in the document, it contains some pretty specific details that can help a lot with developing and answering questions. |
 
-| :warning: WARNING                                            |
-| :------------------------------------------------------------ |
-| There is a section in this document explaining about a feature to apply certain actions on abstract-classes which could pose a possible threat in that it is possible to get into an infinite loop. |
-
 
 
 ## Table of contents
@@ -137,12 +133,17 @@ public class ItemExtension : IExtension<Item>
 Here the ItemExtension is an example of an extension that is responsible for processing the *Item* implementations.
 
 | :exclamation: NOTE​                                           |
-| :------------------------------------------------------------ |
-| The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The developer can should to reapply the extender/visitor to further extent/visit other components. |
+| :----------------------------------------------------------- |
+| The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The reapplication of the extender/visitor is to further extent/visit other components. **BE AWARE:** The official Extender<TState> implementation passes an IExtender<TState> proxy to the extension instead of itself. This ensures that the accepters are always first accepting the extender before the extender extends/visits these accepters. However, when the incoming object in the *Extend* method of the extender is a concrete implementation, the proxy will directly pass the object to the extender. |
 
 ### Construction
 
 To make life as a developer easier, the library (Specifically: *Xtender.DependencyInjection*) comes with a ServiceCollection extension that can be used to easily implement the extender components by building up the Extender client with its segments/extensions.
+
+| :exclamation:  IMPORTANT NOTE​                                |
+| :----------------------------------------------------------- |
+| The IExtender<TState> interface is first implemented by the ExtenderProxy<TState> class and then the real Extender<TState> class. The proxy is introduced as a mechanism to ensure that the IExtender<TState> instance is always first past to the *Accept<TState>(...)* method of the IAccepter implementation and not the other way around. When the accepter that is passed into the *Extend(...)* method is not a interface or abstract class, this step is skipped and the real extender instance is called directly. |
+| This proxy is constructed by instantiating it and passing a lambda as parameter to its constructor. This lambda accepts the proxy itself as parameter and expects another (the real) instance of IExtender<TState> to return. Why the proxy is passed to the lambda is because the Extender<TState> constructor expects the proxy to be passed into one of the parameters. This is to ensure that the extender itself can reuse the proxy when passing it to the extensions. |
 
 ```c#
 var serviceProvider = new ServiceCollection()
@@ -157,21 +158,6 @@ var serviceProvider = new ServiceCollection()
 ```
 
 Here both the aforementioned ItemExtension and the CompositeExtension are linked to the extender by the builder object. The extensions themselves are constructed this way to ensure that they preserve update-to-date dependencies (dependencies with a short lifetime and/or specific temporary data should be retrieved in update-to-date form and should not be inserted while disposed). The IServiceProvider (marked as *provider* in the example) can be used next to the builder to determine the extension dependencies.
-
-:exclamation::warning: **<span style='color:red'>WARNING:</span>**
-
-> You could also apply the *WithAbstractAccepterHandling* method in the registration on the IExtenderBuilder<TState>, this would ensure that when an abstraction is passed to the extender, it is verified and called with its *Accept* method. So in this case you can start the flow with passing the accepter to the extender in cases when the other way around is not possible. 
->
-> **<span style='color:red'>However a few possible dangers :boom: arise:</span>**
->
-> - **<span style='color:red'>Infinite looping:</span>** When the abstract class implements the *Accept* method or another abstract class inherits from the previous one, then it could be possible, when there are no implementations, that the extender continuously calls the abstract-accepter-handling mechanism. This could cause infinite recursive looping. (*However it is highly unlikely to occur, it is still possible*).
-> - **<span style='color:red'>Overhead:</span>** A bunch of type reflection operations are applied, so this could cause quite some processing overhead.
->
-> It is the best practice to: **<span style='color:blue'>Always initiate an extender flow by passing the extender to the *Accept* method over the targeted accepter.</span>** This is also where the name *Accepter* comes from.
->
-> Try to omit using the *WithAbstractAccepterHandling* mechanism. Only use it when there is no other way and when you know what you are doing.
-
-
 
 **Notice:**
 
@@ -209,8 +195,8 @@ var serviceProvider = new ServiceCollection()
 - Attach methods have to give both the context type and the extension type. The context type is the concrete type/implementation type or whatever object that implements the *IAccepter* interface and has to be visited/extended by this extender.
 
 - | :exclamation: NOTE​                                           |
-  | :------------------------------------------------------------ |
-  | Always pass *Extender* to *Accepter*. The other way around, the *Extender* cannot find the right type for the *Accepter* and will utilize the default extension. That is how it is supposed to work, because a visitor of the Visitor Pattern also only has implementation specific *Visit* method. When you still want to proceed with passing *Accepter* to *Extender* at the start, then at least **cast** that type. |
+  | :----------------------------------------------------------- |
+  | The way the visitor pattern works is that the visitor is passed to the accepter, so here in this library: to pass *Extender* to *Accepter*. The other way around, the *Extender* could originally not find the right type for the *Accepter* and would directly utilize the default extension, however the proxy implementation in this library does now enable both ways. It is recommended to implement the *Accept* method of the *Accepter* to directly pass itself to the extender *Extend* method. |
 
 The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, when using the standard Visitor Pattern, have been preserved by the visitor class itself and could be updated when visiting the accepting objects. So the state in this implementation provides its take on that regard.
 
@@ -236,6 +222,9 @@ var extender = services.GetRequiredService<IExtender<string>>();
 
 // The extension process here as adding new operations. NOTE: Best practice is to always pass Extender to Accepter.
 await composition.Accept(extender);
+
+// Though, because of the proxy it is also possible to do this:
+await extender.Extend(composition);
 ```
 
 And the same example when the ExtenderFactory has been registered:
@@ -264,7 +253,7 @@ var factory = services.GetRequiredService<IExtenderFactory<string, string>>(); /
 var extender = factory.Create("component-traverser");
 
 // The extension process here as adding new operations.
-await extender.Extent(composition);
+await composition.Accept(extender);
 ```
 
 

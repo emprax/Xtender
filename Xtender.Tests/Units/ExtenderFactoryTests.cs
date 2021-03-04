@@ -35,10 +35,6 @@ namespace Xtender.Tests.Units
                 .SetupGet(c => c.Provider)
                 .Returns(new Dictionary<string, Func<object>>());
 
-            Mock.Get(this.core)
-                .SetupGet(c => c.Handler)
-                .Returns(new ExtenderAbstractionHandler<string>(false));
-
             // Act 
             var core = this.factory.Create("TEST-KEY");
 

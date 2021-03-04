@@ -23,8 +23,7 @@ namespace Xtender.Tests.Integration
                 .AddTransient<ILogger<TestComponent>>(_ => this.logger)
                 .AddXtender<string>((bldr, _) =>
                 {
-                    bldr.WithAbstractAccepterHandling()
-                        .Default()
+                    bldr.Default()
                         .Attach<TestItem, Test1Extension>()
                         .Attach<TestCollection, Test2Extension>();
                 })

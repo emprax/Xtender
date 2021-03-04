@@ -27,7 +27,7 @@ namespace Xtender
             }
             
             var core = factory.Invoke();
-            return new Extender<TState>(core.Provider, core.Handler);
+            return new ExtenderProxy<TState>(proxy => new Extender<TState>(core.Provider, proxy));
         }
     }
 }

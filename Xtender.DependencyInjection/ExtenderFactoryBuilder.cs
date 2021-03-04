@@ -26,7 +26,7 @@ namespace Xtender.DependencyInjection
             var builder = new ExtenderBuilder<TState>(cores, this.provider);
 
             configuration.Invoke(builder);
-            this.extenders.Add(key, () => new ExtenderCore<TState>(cores, builder.CreateAbstractHandler()));
+            this.extenders.Add(key, () => new ExtenderCore<TState>(cores));
 
             return this;
         }

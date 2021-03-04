@@ -19,7 +19,7 @@ namespace Xtender.DependencyInjection
                 .AddTransient<IExtender<TState>>(provider => 
                 {
                     var core = provider.GetRequiredService<IExtenderCore<TState>>();
-                    return new Extender<TState>(core.Provider, core.Handler);
+                    return new ExtenderProxy<TState>(proxy => new Extender<TState>(core.Provider, proxy));
                 })
                 .AddSingleton<IExtenderCore<TState>>(provider => 
                 {
@@ -27,7 +27,7 @@ namespace Xtender.DependencyInjection
                     var builder = new ExtenderBuilder<TState>(cores, provider);
 
                     configuration.Invoke(builder, provider);
-                    return new ExtenderCore<TState>(cores, builder.CreateAbstractHandler());
+                    return new ExtenderCore<TState>(cores);
                 });
         }
 
