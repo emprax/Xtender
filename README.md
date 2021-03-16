@@ -65,7 +65,7 @@ The first version that was considered when implementing the Xtender library has 
 
 ![Xtender-V1](docs/Xtender-V1.png)
 
-It comes down to an approach where a client is used that holds a reference to the root-segment in the chain. It executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment. This detection is achieved by doing a type check, and when matching, casting the object to the specific concrete implementation it is specified to be. For a short chain there is no major problem in this approach, although, when adding more segments to the chain, it takes longer on average to find the matching segment. The complexity of this solution is therefore of O(n). It has the tendency to move away from a constant effeciency.
+It comes down to an approach where a client is used that holds a reference to the root-segment in the chain. It executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment. This detection is achieved by doing a type check, and when matching, casting the object to the specific concrete implementation it is specified to be. For a short chain there is no major problem in this approach, although, when adding more segments to the chain, it takes longer on average to find the matching segment. The complexity of this solution is therefore of O(n). It has the tendency to move away from a constant efficiency.
 
 ### Hash-map based
 
