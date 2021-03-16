@@ -95,14 +95,14 @@ public class Item : Component
 {
     public string Context { get; set; }
     
-    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
 }
 
 public class Composite : Component
 {
     public IList<Component> Components { get; set; }
     
-    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extent(this);
+    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
 }
 ```
 
@@ -110,12 +110,12 @@ Here the Composite Pattern *Component* implements the IAccepter interface and pr
 
 ### Extensions
 
-The extensions are the definitions of the so-called visitor segments. Each handles a concrete implementation that is used to visit (and extent the functionality) of a specific implementation of the aforementioned composite *Component* class.
+The extensions are the definitions of the so-called visitor segments. Each handles a concrete implementation that is used to visit (and extend) the functionality of a specific implementation of the aforementioned composite *Component* class.
 
 ```c#
 public class ItemExtension : IExtension<Item>
 {
-    public Task Extent(Item context, IExtender<string> extender)
+    public Task Extend(Item context, IExtender<string> extender)
     {
         System.Console.WriteLine("Entered ItemExtension");
         if (extender.State is null)
@@ -134,7 +134,7 @@ Here the ItemExtension is an example of an extension that is responsible for pro
 
 | :exclamation: NOTE​                                           |
 | :----------------------------------------------------------- |
-| The *Extent(...)* method has a second parameter, the extender (the actual Visitor) itself. The reapplication of the extender/visitor is to further extent/visit other components. **BE AWARE:** The official Extender<TState> implementation passes an IExtender<TState> proxy to the extension instead of itself. This ensures that the accepters are always first accepting the extender before the extender extends/visits these accepters. However, when the incoming object in the *Extend* method of the extender is a concrete implementation, the proxy will directly pass the object to the extender. |
+| The *Extend(...)* method has a second parameter, the extender (the actual Visitor) itself. The reapplication of the extender/visitor is to further extend/visit other components. **BE AWARE:** The official Extender<TState> implementation passes an IExtender<TState> proxy to the extension instead of itself. This ensures that the accepters are always first accepting the extender before the extender extends/visits these accepters. However, when the incoming object in the *Extend* method of the extender is a concrete implementation, the proxy will directly pass the object to the extender. |
 
 ### Construction
 
