@@ -113,7 +113,7 @@ Here the Composite Pattern *Component* implements the IAccepter interface and pr
 The extensions are the definitions of the so-called visitor segments. Each handles a concrete implementation that is used to visit (and extend) the functionality of a specific implementation of the aforementioned composite *Component* class.
 
 ```c#
-public class ItemExtension : IExtension<Item>
+public class ItemExtension : IExtension<string, Item>
 {
     public Task Extend(Item context, IExtender<string> extender)
     {
