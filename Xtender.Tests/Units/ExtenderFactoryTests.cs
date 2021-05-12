@@ -33,7 +33,7 @@ namespace Xtender.Tests.Units
             // Arrange
             Mock.Get(this.core)
                 .SetupGet(c => c.Provider)
-                .Returns(new Dictionary<string, Func<object>>());
+                .Returns(new Dictionary<string, Func<IExtensionBase>>());
 
             // Act 
             var core = this.factory.Create("TEST-KEY");

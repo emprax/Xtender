@@ -8,26 +8,27 @@ namespace Xtender.Tests.Utilities
         protected TestComponent(string value) => this.Value = value;
 
         public string Value { get; }
-
-        public abstract Task Accept<TState>(IExtender<TState> extender);
+        
+        public abstract Task Accept(IExtender extender);
     }
 
-    public class TestItem : TestComponent
+    public abstract class Accepter<TSelf> : TestComponent where TSelf : TestComponent
+    {
+        protected Accepter(string value) : base(value) { }
+        
+        public override Task Accept(IExtender extender) => extender.Extend(this as TSelf);
+    }
+
+    public class TestItem : Accepter<TestItem>
     {
         public TestItem(string value) : base(value) { }
-
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
     }
 
-    public class TestCollection : TestComponent
+    public class TestCollection : Accepter<TestCollection>
     {
         public IReadOnlyCollection<TestComponent> Components { get; }
 
         public TestCollection(string value, IReadOnlyCollection<TestComponent> components) : base(value)
-        {
-            this.Components = components;
-        }
-
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
+            => this.Components = components;
     }
 }

@@ -24,8 +24,8 @@ namespace Xtender.Tests.Integration
                 .AddXtender<string>((bldr, _) =>
                 {
                     bldr.Default()
-                        .Attach<TestItem, Test1Extension>()
-                        .Attach<TestCollection, Test2Extension>();
+                        .Attach<TestItem, Test1ExtensionBase>()
+                        .Attach<TestCollection, Test2ExtensionBase>();
                 })
                 .BuildServiceProvider();
         }

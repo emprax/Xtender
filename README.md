@@ -79,7 +79,7 @@ The dictionary (as map-like structure implemented with a hash-map) is a well-kno
 
 ## Coding Guide
 
-This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application.
+This section emphasizes the important components of the library on the basis of some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application. **Be aware** of both the stateful (with TState generics) and stateless versions of the library. The state property that is provided by IExtender<TState> is nothing more than a simple storage container for temporary data, because a normal visitor could also save such data inside its class fields/properties, so this is a nod to that ability. Nevertheless, the stateless version is there to support visiting without state storing. What has to be noted about this is that the stateful version of the IExtender can be registered with both stateful and stateless versions of the extensions, though the stateless IExtender can only use stateless extensions. The cause for this difference is that the stateful extensions could depend on state from the IExtender<TState> version, so the stateless IExtender version is incompatible with that, whereas the stateless extensions do accept a higher abstraction of IExtender, which the IExtender<TState> extends from, so nothing will be harmed there.
 
 ### Accepter
 
@@ -88,31 +88,32 @@ The accepter is the object that can be visited/extended. In most cases this woul
 ```c#
 public abstract Component : IAccepter
 {
-    public abstract Task Accept<TState>(IExtender<TState> extender);
+    public abstract Task Accept(IExtender extender);
 }
 
 public class Item : Component
 {
     public string Context { get; set; }
     
-    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
+    public override Task Accept(IExtender extender) => extender.Extend(this);
 }
 
 public class Composite : Component
 {
     public IList<Component> Components { get; set; }
     
-    public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
+    public override Task Accept(IExtender extender) => extender.Extend(this);
 }
 ```
 
-Here the Composite Pattern *Component* implements the IAccepter interface and provides the Accept(...) method as an abstract method, though it is a restatement of the same method defined by the interface. This enable the implementations (Item, Composite) to implement the correct version of the method. 
+Here the Composite Pattern *Component* implements the IAccepter interface and provides the Accept(...) method as an abstract method, though it is a restatement of the same method defined by the interface. This enable the implementations (Item, Composite) to implement the correct version of the method.
 
 ### Extensions
 
 The extensions are the definitions of the so-called visitor segments. Each handles a concrete implementation that is used to visit (and extend) the functionality of a specific implementation of the aforementioned composite *Component* class.
 
 ```c#
+// A version with state
 public class ItemExtension : IExtension<string, Item>
 {
     public Task Extend(Item context, IExtender<string> extender)
@@ -128,6 +129,16 @@ public class ItemExtension : IExtension<string, Item>
         return Task.CompletedTask;
     }
 }
+
+// A version without state
+public class ItemExtension : IExtension<Item>
+{
+    public Task Extend(Item context, IExtender extender)
+    {
+        System.Console.WriteLine("Entered ItemExtension");
+        return Task.CompletedTask;
+    }
+}
 ```
 
 Here the ItemExtension is an example of an extension that is responsible for processing the *Item* implementations.
@@ -135,6 +146,7 @@ Here the ItemExtension is an example of an extension that is responsible for pro
 | :exclamation: NOTE​                                           |
 | :----------------------------------------------------------- |
 | The *Extend(...)* method has a second parameter, the extender (the actual Visitor) itself. The reapplication of the extender/visitor is to further extend/visit other components. **BE AWARE:** The official Extender<TState> implementation passes an IExtender<TState> proxy to the extension instead of itself. This ensures that the accepters are always first accepting the extender before the extender extends/visits these accepters. However, when the incoming object in the *Extend* method of the extender is a concrete implementation, the proxy will directly pass the object to the extender. |
+| **BE AWARE:** The stateless version of the extension can be registered for both the stateful and stateless versions of the extenders, while the stateful version can only be registered for a stateful extender. |
 
 ### Construction
 
@@ -146,8 +158,20 @@ To make life as a developer easier, the library (Specifically: *Xtender.Dependen
 | This proxy is constructed by instantiating it and passing a lambda as parameter to its constructor. This lambda accepts the proxy itself as parameter and expects another (the real) instance of IExtender<TState> to return. Why the proxy is passed to the lambda is because the Extender<TState> constructor expects the proxy to be passed into one of the parameters. This is to ensure that the extender itself can reuse the proxy when passing it to the extensions. |
 
 ```c#
+// Stateful version: both extension types can be registered here.
 var serviceProvider = new ServiceCollection()
     .AddXtender<string>((builder, provider) =>
+    {
+        builder
+            .Default<MyDefaultExtension>()
+            .Attach<Item, StatefulItemExtension>()
+            .Attach<Composite, CompositeExtension>(() => new CompositeExtension());
+    })
+    .BuildServiceProvider();
+
+// Stateless version: only stateless versions can be registered here.
+var serviceProvider = new ServiceCollection()
+    .AddXtender((builder, provider) =>
     {
         builder
             .Default<MyDefaultExtension>()
@@ -165,8 +189,30 @@ Here both the aforementioned ItemExtension and the CompositeExtension are linked
 - The builder will give rise to a specific extender-core which will be registered as a **Singleton** dependency, though, the refreshment of the extensions is ensured by letting the extender replay a providing-lambda stored in the dictionary on the given key. It should be noted that when a developer wants to store multiple extenders with the same visitor-state, he/she should use the ExtenderFactory methodology or use libraries like: [ModulR](https://github.com/emprax/ModulR).
 
 ```c#
+// Stateful version: both extension types can be registered here.
 var serviceProvider = new ServiceCollection()
     .AddXtenderFactory<string, OrderCreateRequest>((builder, provider) =>
+    {
+        builder.WithExtender("build-up", bldr =>
+        {
+            bldr.Default()
+                .Attach<Order, OrderCreateExtension>()
+                .Attach<OrderLine, StatefulOrderLineCreateExtension>()
+                .Attach<Address, OrderAddressCreateExtension>()
+        });
+        
+        builder.WithExtender("attachments", bldr =>
+        {
+            bldr.Default()
+                .Attach<OrderAttachment, StatefulOrderAttachmentCreateExtension>()
+                .Attach<Address, OrderAttachmentAddressCreateExtension>()
+        });
+    })
+    .BuildServiceProvider();
+
+// Stateless version: only stateless versions can be registered here.
+var serviceProvider = new ServiceCollection()
+    .AddXtenderFactory<string>((builder, provider) =>
     {
         builder.WithExtender("build-up", bldr =>
         {
@@ -247,7 +293,7 @@ var composition = new Composite
 };
 
 // Getting the ExtenderFactory from the ServiceProvider from the DI.
-var factory = services.GetRequiredService<IExtenderFactory<string, string>>(); // 1st generic is the key, 2nd generic the state.
+var factory = services.GetRequiredService<IExtenderFactory<string, string>>(); // 1st generic is the key, 2nd generic the state, when using the stateful version, otherwise not a 2nd generic.
 
 // Letting the extender be created for a saved core by the ExtenderFactory.
 var extender = factory.Create("component-traverser");

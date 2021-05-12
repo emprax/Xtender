@@ -26,13 +26,13 @@ namespace Xtender.Tests.Integration
                         .WithExtender("TEST1", bldr =>
                         {
                             bldr.Default()
-                                .Attach<TestItem, Test1Extension>()
-                                .Attach<TestCollection, Test2Extension>();
+                                .Attach<TestItem, Test1ExtensionBase>()
+                                .Attach<TestCollection, Test2ExtensionBase>();
                         })
                         .WithExtender("TEST2", bldr =>
                         {
-                            bldr.Default<CustomDefaultExtension>()
-                                .Attach<TestCollection, Test2Extension>();
+                            bldr.Default<CustomDefaultExtensionBase>()
+                                .Attach<TestCollection, Test2ExtensionBase>();
                         });
                 })
                 .BuildServiceProvider();

@@ -5,25 +5,25 @@ using Xtender.DependencyInjection;
 
 namespace Xtender.Example.Console
 {
-    public class FactoryCase
+    public class StatedFactoryCase
     {
         public async Task Execute()
         {
             var provider = new ServiceCollection()
                 .AddXtenderFactory<string, IList<string>>((builder, provider) =>
                 {
-                    builder.WithExtender("first-part", bldr =>
-                    {
-                        bldr.Default()
-                            .Attach<Item, Extensions.FactoryCase.ListedItemExtensionBase>()
-                            .Attach<Composite, Extensions.FactoryCase.ListedCompositeExtensionBase>();
-                    });
-
-                    builder.WithExtender("second-part", bldr =>
-                    {
+                    builder.WithExtender("first-part", bldr => 
+                    { 
                         bldr.Default()
                             .Attach<Item, Extensions.StatedFactoryCase.ListedItemExtensionBase>()
-                            .Attach<Composite, Extensions.FactoryCase.OtherListedCompositeExtensionBase>();
+                            .Attach<Composite, Extensions.StatedFactoryCase.ListedCompositeExtensionBase>();
+                    });
+
+                    builder.WithExtender("second-part", bldr => 
+                    { 
+                        bldr.Default()
+                            .Attach<Item, Extensions.StatedFactoryCase.ListedItemExtensionBase>()
+                            .Attach<Composite, Extensions.StatedFactoryCase.OtherListedCompositeExtensionBase>();
                     });
                 })
                 .BuildServiceProvider();

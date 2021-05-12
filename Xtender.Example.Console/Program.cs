@@ -8,11 +8,22 @@ namespace Xtender.Example.Console
         {
             System.Console.WriteLine("Extender:");
 
-            //var caseResults = await new ExtenderTestCase().Execute();
+            var caseResults = await new StatedExtenderTestCase().Execute();
             
-            //System.Console.WriteLine();
-            //System.Console.WriteLine(caseResults);
-            //System.Console.WriteLine();
+            System.Console.WriteLine();
+            System.Console.WriteLine(caseResults);
+            System.Console.WriteLine();
+            System.Console.WriteLine();
+
+            await new ExtenderTestCase().Execute();
+
+            System.Console.WriteLine();
+            System.Console.WriteLine();
+
+            await new StatedFactoryCase().Execute();
+
+            System.Console.WriteLine();
+            System.Console.WriteLine();
 
             await new FactoryCase().Execute();
         }

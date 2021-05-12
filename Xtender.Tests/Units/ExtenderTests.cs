@@ -13,7 +13,7 @@ namespace Xtender.Tests.Units
         public async Task ShouldThrowInvalidOperationExceptionWhenDefaultExtensionCannotBeFound()
         {
             // Arrange
-            var extensions = new Dictionary<string, Func<object>>();
+            var extensions = new Dictionary<string, Func<IExtensionBase>>();
             var extender = new ExtenderProxy<string>(proxy => new Extender<string>(extensions, proxy));
             var component = new TestItem("TEST-ITEM");
 
@@ -31,7 +31,7 @@ namespace Xtender.Tests.Units
         {
             // Arrange
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
+            var extensions = new Dictionary<string, Func<IExtensionBase>>(new Dictionary<string, Func<IExtensionBase>>
             {
                 [typeof(TestItem).FullName] = null,
                 [typeof(object).FullName] = () => defaultExtension
@@ -53,7 +53,7 @@ namespace Xtender.Tests.Units
         {
             // Arrange
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
-            var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
+            var extensions = new Dictionary<string, Func<IExtensionBase>>(new Dictionary<string, Func<IExtensionBase>>
             {
                 [typeof(TestItem).FullName] = () => null,
                 [typeof(object).FullName] = () => defaultExtension
@@ -77,7 +77,7 @@ namespace Xtender.Tests.Units
             var concreteExtension = Mock.Of<IExtension<string, string>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
 
-            var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
+            var extensions = new Dictionary<string, Func<IExtensionBase>>(new Dictionary<string, Func<IExtensionBase>>
             {
                 [typeof(TestItem).FullName] = () => concreteExtension,
                 [typeof(object).FullName] = () => defaultExtension
@@ -101,7 +101,7 @@ namespace Xtender.Tests.Units
             var concreteExtension = Mock.Of<IExtension<string, TestCollection>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
 
-            var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
+            var extensions = new Dictionary<string, Func<IExtensionBase>>(new Dictionary<string, Func<IExtensionBase>>
             {
                 [typeof(TestCollection).FullName] = () => concreteExtension,
                 [typeof(object).FullName] = () => defaultExtension
@@ -125,7 +125,7 @@ namespace Xtender.Tests.Units
             var concreteExtension = Mock.Of<IExtension<string, TestItem>>(MockBehavior.Strict);
             var defaultExtension = Mock.Of<IExtension<string, object>>(MockBehavior.Strict);
             
-            var extensions = new Dictionary<string, Func<object>>(new Dictionary<string, Func<object>>
+            var extensions = new Dictionary<string, Func<IExtensionBase>>(new Dictionary<string, Func<IExtensionBase>>
             {
                 [typeof(TestItem).FullName] = () => concreteExtension,
                 [typeof(object).FullName] = () => defaultExtension

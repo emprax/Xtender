@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Xtender.Tests.Utilities
 {
-    public class Test1Extension : IExtension<string, TestItem>
+    public class Test1ExtensionBase : IExtension<string, TestItem>
     {
         private readonly ILogger<TestComponent> logger;
 
-        public Test1Extension(ILogger<TestComponent> logger) => this.logger = logger;
+        public Test1ExtensionBase(ILogger<TestComponent> logger) => this.logger = logger;
 
         public Task Extend(TestItem context, IExtender<string> extender)
         {
@@ -16,11 +16,11 @@ namespace Xtender.Tests.Utilities
         }
     }
 
-    public class Test2Extension : IExtension<string, TestCollection>
+    public class Test2ExtensionBase : IExtension<string, TestCollection>
     {
         private readonly ILogger<TestComponent> logger;
 
-        public Test2Extension(ILogger<TestComponent> logger) => this.logger = logger;
+        public Test2ExtensionBase(ILogger<TestComponent> logger) => this.logger = logger;
 
         public async Task Extend(TestCollection context, IExtender<string> extender)
         {
@@ -32,11 +32,11 @@ namespace Xtender.Tests.Utilities
         }
     }
 
-    public class CustomDefaultExtension : IExtension<string, object>
+    public class CustomDefaultExtensionBase : IExtension<string, object>
     {
         private readonly ILogger<TestComponent> logger;
 
-        public CustomDefaultExtension(ILogger<TestComponent> logger) => this.logger = logger;
+        public CustomDefaultExtensionBase(ILogger<TestComponent> logger) => this.logger = logger;
 
         public Task Extend(object context, IExtender<string> extender)
         {

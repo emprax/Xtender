@@ -5,18 +5,18 @@ namespace Xtender.Example.Console
 {
     public abstract class Component : IAccepter
     {
-        public abstract Task Accept<TState>(IExtender<TState> extender);
+        public abstract Task Accept(IExtender extender);
     }
-
-    public class Item : Component
+    
+    public abstract class Accepter<TSelf> : Component where TSelf : Component
     {
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
+        public override Task Accept(IExtender extender) => extender.Extend(this as TSelf);
     }
 
-    public class Composite : Component
+    public class Item : Accepter<Item> { }
+
+    public class Composite : Accepter<Composite>
     {
         public IList<Component> Components { get; set; }
-
-        public override Task Accept<TState>(IExtender<TState> extender) => extender.Extend(this);
     }
 }

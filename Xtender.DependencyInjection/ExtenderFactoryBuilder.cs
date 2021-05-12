@@ -22,11 +22,39 @@ namespace Xtender.DependencyInjection
                 return this;
             }
 
-            var cores = new ConcurrentDictionary<string, Func<object>>();
+            var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
             var builder = new ExtenderBuilder<TState>(cores, this.provider);
 
             configuration.Invoke(builder);
             this.extenders.Add(key, () => new ExtenderCore<TState>(cores));
+
+            return this;
+        }
+    }
+
+    internal class ExtenderFactoryBuilder<TKey> : IExtenderFactoryBuilder<TKey>
+    {
+        private readonly IDictionary<TKey, Func<IExtenderCore>> extenders;
+        private readonly IServiceProvider provider;
+
+        internal ExtenderFactoryBuilder(IDictionary<TKey, Func<IExtenderCore>> extenders, IServiceProvider provider)
+        {
+            this.extenders = extenders;
+            this.provider = provider;
+        }
+
+        public IExtenderFactoryBuilder<TKey> WithExtender(TKey key, Action<IExtenderBuilder> configuration)
+        {
+            if (this.extenders.ContainsKey(key))
+            {
+                return this;
+            }
+
+            var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
+            var builder = new ExtenderBuilder(cores, this.provider);
+
+            configuration.Invoke(builder);
+            this.extenders.Add(key, () => new ExtenderCore(cores));
 
             return this;
         }

@@ -2,24 +2,25 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Xtender.DependencyInjection;
+using Xtender.Example.Console.Extensions;
 
 namespace Xtender.Example.Console
 {
     public class ExtenderTestCase
     {
-        public async Task<string> Execute()
+        public async Task Execute()
         {
             var services = new ServiceCollection()
-                .AddXtender<string>((builder, provider) =>
+                .AddXtender((builder, provider) =>
                 {
                     builder
                         .Default()
-                        .Attach<Composite, CompositeExtension>()
-                        .Attach<Item, ItemExtension>();
+                        .Attach<Composite, CompositeExtensionBase>()
+                        .Attach<Item, ItemExtensionBase>();
                 })
                 .BuildServiceProvider();
 
-            var service = services.GetRequiredService<IExtender<string>>();
+            var service = services.GetRequiredService<IExtender>();
             var composite = new Composite
             {
                 Components = new List<Component>
@@ -39,7 +40,6 @@ namespace Xtender.Example.Console
             };
             
             await composite.Accept(service);
-            return service.State;
         }
     }
 }
