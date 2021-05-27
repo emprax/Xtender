@@ -22,7 +22,7 @@ Specific use-cases can be found within the section [**Which Problems to solve**]
 | :------------------------------------------------------------ |
 | Be aware of the other **NOTE**s in the document, it contains some pretty specific details that can help a lot with developing and answering questions. |
 
-
+Use of Accepter object and visiting of all types of objects available since version 3.1.0.
 
 ## Table of contents
 
@@ -107,6 +107,18 @@ public class Composite : Component
 ```
 
 Here the Composite Pattern *Component* implements the IAccepter interface and provides the Accept(...) method as an abstract method, though it is a restatement of the same method defined by the interface. This enable the implementations (Item, Composite) to implement the correct version of the method.
+
+| :exclamation:  IMPORTANT NOTE​                                |
+| :----------------------------------------------------------- |
+| Since version 3.1.0. it is also possible to accept all types of objects, so the IAccepter interface is not necessary by default, although the functionality in the form of an extension method requires the use of the Accepter object, which encapsulates the desired, visitable object. The extender can extend both direct IAccepter implemented objects of Accepter objects. |
+
+````c#
+int integer = 3;
+new Accepter<int>(integer).Accept(extender);
+
+// OR by the us of the extension-method:
+integer.Accept(extender);   // signature:    Task Accept<TValue>(this TValue value, IExtender extender)...
+````
 
 ### Extensions
 

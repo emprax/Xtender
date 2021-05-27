@@ -41,6 +41,21 @@ namespace Xtender
                 ? accepter?.Accept(this.extender) ?? Task.CompletedTask
                 : this.extender.Extend(accepter);
         }
+
+        /// <summary>
+        /// The proxy Extend method. This method ensures that the Accepter is always first accepting the Extender before the Extender extends/visits the Accepter. But when the Accepter is not an interface or abstact class, it is directly passed to the internal Extender instance.
+        /// </summary>
+        /// <typeparam name="TValue">Type of the Accepter.</typeparam>
+        /// <param name="accepter">The Accepter instance to be extended/visited.</param>
+        /// <returns>Task.</returns>
+        public Task Extend<TValue>(Accepter<TValue> accepter)
+        {
+            var type = typeof(TValue);
+
+            return type.IsAbstract || type.IsInterface
+                ? accepter?.Accept(this.extender) ?? Task.CompletedTask
+                : this.extender.Extend(accepter);
+        }
     }
 
     /// <summary>
@@ -66,6 +81,21 @@ namespace Xtender
         public Task Extend<TAccepter>(TAccepter accepter) where TAccepter : class, IAccepter
         {
             var type = typeof(TAccepter);
+
+            return type.IsAbstract || type.IsInterface
+                ? accepter?.Accept(this.extender) ?? Task.CompletedTask
+                : this.extender.Extend(accepter);
+        }
+
+        /// <summary>
+        /// The proxy Extend method. This method ensures that the Accepter is always first accepting the Extender before the Extender extends/visits the Accepter. But when the Accepter is not an interface or abstact class, it is directly passed to the internal Extender instance.
+        /// </summary>
+        /// <typeparam name="TValue">Type of the Accepter.</typeparam>
+        /// <param name="accepter">The Accepter instance to be extended/visited.</param>
+        /// <returns>Task.</returns>
+        public Task Extend<TValue>(Accepter<TValue> accepter)
+        {
+            var type = typeof(TValue);
 
             return type.IsAbstract || type.IsInterface
                 ? accepter?.Accept(this.extender) ?? Task.CompletedTask

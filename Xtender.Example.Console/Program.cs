@@ -26,6 +26,7 @@ namespace Xtender.Example.Console
             System.Console.WriteLine();
 
             await new FactoryCase().Execute();
+            await RandomObjectAccepterTest.Run();
         }
     }
 }

@@ -21,11 +21,19 @@ namespace Xtender
     public interface IExtender
     {
         /// <summary>
-        /// The visit method, here called Extent, to traverse and extend accepting object with some additional functionality.
+        /// The visit method, here called Extend, to traverse and extend accepting object with some additional functionality.
         /// </summary>
         /// <typeparam name="TAccepter">The type of the accepter that implements the IAccepter interface.</typeparam>
         /// <param name="accepter">The accepter that implements the IAccepter interface.</param>
         /// <returns>Task.</returns>
         Task Extend<TAccepter>(TAccepter accepter) where TAccepter : class, IAccepter;
+
+        /// <summary>
+        /// The visit method, here called Extend, to traverse and extend accepting object with some additional functionality. This version is used with the accepter encapsulation functionality to extend the usage of the Extender to ordinary, non-IAccepter-implementing objects.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the encapsulated object that does not implement an IAccepter interface within an accepter object.</typeparam>
+        /// <param name="accepter">Accepter object that encapsulates a type that does not implement an IAccepter interface.</param>
+        /// <returns>Task.</returns>
+        Task Extend<TValue>(Accepter<TValue> accepter);
     }
 }
