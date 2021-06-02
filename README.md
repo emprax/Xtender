@@ -2,14 +2,10 @@
 
 # <img src=".\docs\Xtender-logo.png" style="zoom:33%;" /> Xtender
 
-![Nuget](https://img.shields.io/nuget/v/Xtender?color=green&style=plastic)
-
-![Nuget](https://img.shields.io/nuget/v/Xtender.Trees?color=green&style=plastic)
-
 NuGet package pages:
-- [Xtender](https://www.nuget.org/packages/Xtender/)
-- [Xtender.DependencyInjection](https://www.nuget.org/packages/Xtender.DependencyInjection/)
-- [Xtender.Trees](https://www.nuget.org/packages/Xtender.Trees/)
+- [Xtender](https://www.nuget.org/packages/Xtender/) ![Nuget](https://img.shields.io/nuget/v/Xtender?color=green&style=plastic)
+- [Xtender.DependencyInjection](https://www.nuget.org/packages/Xtender.DependencyInjection/) ![Nuget](https://img.shields.io/nuget/v/Xtender.DependencyInjection?color=green&style=plastic)
+- [Xtender.Trees](https://www.nuget.org/packages/Xtender.Trees/) ![Nuget](https://img.shields.io/nuget/v/Xtender.Trees?color=green&style=plastic)
 
 ## Introduction
 
