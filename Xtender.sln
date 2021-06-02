@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.Example.Console", "Xtender.Example.Console\Xtender.Example.Console.csproj", "{CF2D58A1-0506-4A33-B794-7D3A5B7F25E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Tests", "Xtender.Tests\Xtender.Tests.csproj", "{504A6EED-589E-417B-B6B4-51E55472CABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.Tests", "Xtender.Tests\Xtender.Tests.csproj", "{504A6EED-589E-417B-B6B4-51E55472CABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Trees", "Xtender.Trees\Xtender.Trees.csproj", "{785A7897-669D-4B0D-BA3A-3D17E3E99CA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{504A6EED-589E-417B-B6B4-51E55472CABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{504A6EED-589E-417B-B6B4-51E55472CABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{504A6EED-589E-417B-B6B4-51E55472CABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785A7897-669D-4B0D-BA3A-3D17E3E99CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785A7897-669D-4B0D-BA3A-3D17E3E99CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785A7897-669D-4B0D-BA3A-3D17E3E99CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785A7897-669D-4B0D-BA3A-3D17E3E99CA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

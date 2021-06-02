@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net50</TargetFrameworks>
+    <Authors>Emprax</Authors>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageIcon>Xtender-logo.png</PackageIcon>
+    <Description>The tree-structure extension in regards to the Xtender library. Provides a compositional data-structure to create trees in combination with the Xtender library.</Description>
+    <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
+    <PackageTags>extension,visitor,composite,tree,node</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.0</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\docs\Xtender-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE" Link="LICENSE">
+      <PackagePath></PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xtender\Xtender.csproj" />
+  </ItemGroup>
+
+</Project>

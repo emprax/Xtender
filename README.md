@@ -4,9 +4,12 @@
 
 ![Nuget](https://img.shields.io/nuget/v/Xtender?color=green&style=plastic)
 
+![Nuget](https://img.shields.io/nuget/v/Xtender.Trees?color=green&style=plastic)
+
 NuGet package pages:
 - [Xtender](https://www.nuget.org/packages/Xtender/)
 - [Xtender.DependencyInjection](https://www.nuget.org/packages/Xtender.DependencyInjection/)
+- [Xtender.Trees](https://www.nuget.org/packages/Xtender.Trees/)
 
 ## Introduction
 
@@ -34,6 +37,7 @@ Use of Accepter object and visiting of all types of objects available since vers
     + [Accepter](#accepter)
     + [Extensions](#extensions)
     + [Construction](#construction)
+  + [Xtender.Trees](#xtender.trees)
   * [Which Problems to solve](#which-problems-to-solve)
     * [Possible UseCases](#possible-usecases)
 
@@ -314,7 +318,11 @@ var extender = factory.Create("component-traverser");
 await composition.Accept(extender);
 ```
 
+## Xtender.Trees
 
+The Xtender.Trees package provides the means of creating tree-structures where the tree-nodes implement the IAccepter interface, so the Xtender functionality can be applied to this tree. This tree-structure is provided because of it being one of the ultimate structures that can be visited. As stated before, the composite pattern works quite well with the visitor pattern because of the abstract fashion of composites and the abililty for the visitor pattern to traverse and visit these composite concrete nodes.
+
+The Xtender.Trees package provides the tree and node interfaces as well as a tree-builder and a node-builder to quickly construct trees and nodes.
 
 ## Which Problems to solve
 
