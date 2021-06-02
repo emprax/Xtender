@@ -15,16 +15,22 @@ namespace Xtender.Trees
 
         public Node(string id, INode parent, TItem item) : this(id, parent, item, new List<INode>()) { }
 
-        public Node(INode parent, TItem item, List<INode> children) : this(Guid.NewGuid().ToString(), parent, item, children) { }
+        public Node(INode parent, TItem item, IEnumerable<INode> children) : this(Guid.NewGuid().ToString(), parent, item, children) { }
 
         public Node(INode parent, TItem item, Action<INodeBuilder> builder) : this(Guid.NewGuid().ToString(), parent, item, builder) { }
 
-        public Node(string id, INode parent, TItem item, List<INode> children)
+        public Node(string id, INode parent, TItem item, IEnumerable<INode> children)
         {
             this.Id = id;
             this.Value = item;
             this.Parent = parent;
-            this.children = children;
+            this.children = children
+                .Select(c =>
+                {
+                    c.Parent = this;
+                    return c;
+                })
+                .ToList();
         }
 
         public Node(string id, INode parent, TItem item, Action<INodeBuilder> builder)
@@ -41,7 +47,7 @@ namespace Xtender.Trees
 
         public TItem Value { get; }
 
-        public INode Parent { get; }
+        public INode Parent { get; set; }
 
         public IReadOnlyCollection<INode> Children => this.children.AsReadOnly();
 
@@ -59,7 +65,11 @@ namespace Xtender.Trees
             return node;
         }
 
-        public void Add(INode node) => this.children.Add(node);
+        public void Add(INode node)
+        {
+            node.Parent = this;
+            this.children.Add(node);
+        }
 
         public void Add(Action<INodeBuilder> builder) => builder.Invoke(new NodeBuilder(this));
 
@@ -67,6 +77,7 @@ namespace Xtender.Trees
         {
             foreach (var value in values)
             {
+                value.Parent = this;
                 this.children.Add(value);
             }
         }

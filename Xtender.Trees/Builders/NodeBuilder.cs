@@ -8,6 +8,8 @@ namespace Xtender.Trees.Builders
 
         public NodeBuilder(INode parentNode) => this.parentNode = parentNode;
 
+        public static INodeBuilder New(INode node) => new NodeBuilder(node);
+
         public INodeBuilder Add(INode node)
         {
             this.parentNode.Add(node);

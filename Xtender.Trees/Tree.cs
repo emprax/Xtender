@@ -7,11 +7,25 @@ namespace Xtender.Trees
 {
     public class Tree : ITree
     {
+        private INode rootNode;
+
         public Tree() { }
 
-        public Tree(INode root) => this.Root = root;
+        public Tree(INode root)
+        {
+            this.Root = root;
+            this.Root.Parent = null;
+        }
 
-        public INode Root { get; set; }
+        public INode Root
+        {
+            get => this.rootNode;
+            set
+            {
+                this.rootNode = value;
+                this.rootNode.Parent = null;
+            }
+        }
 
         IEnumerator<INode> IEnumerable<INode>.GetEnumerator() => this.Root.GetEnumerator();
 

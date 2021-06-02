@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Xtender.DependencyInjection\Xtender.DependencyInjection.csproj" />
-    <ProjectReference Include="..\Xtender.Tree\Xtender.Trees.csproj" />
+    <ProjectReference Include="..\Xtender.Trees\Xtender.Trees.csproj" />
   </ItemGroup>
 
 </Project>

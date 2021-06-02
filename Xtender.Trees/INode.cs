@@ -30,7 +30,7 @@ namespace Xtender.Trees
         /// Reference to the parent node of the this node.
         /// When this property returns null, then this indicates that this node is a root-node.
         /// </summary>
-        INode Parent { get; }
+        INode Parent { get; set; }
 
         /// <summary>
         /// The child-nodes of this node, functioning as branches sprouting from this node into new paths.
