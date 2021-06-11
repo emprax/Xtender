@@ -75,7 +75,7 @@ A second version has been established to solve the aforementioned disadvantage i
 
 The dictionary (as map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and the dictionary calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced by the chain-based version. This version operates more constantly in speed and efficiency.
 
-
+*From version 3.1.0. of the Xtender.DependencyInjection package on, the control on the capacity of the dictionaries in the full Xtender library packages is improved. Instead of having a default capacity of 31 records, the capacities of the dictionaries are now configured by means of the amount of registered extensions.*
 
 ## Coding Guide
 

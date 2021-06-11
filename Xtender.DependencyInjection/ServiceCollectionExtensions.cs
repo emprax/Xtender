@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Xtender.DependencyInjection
@@ -23,11 +23,11 @@ namespace Xtender.DependencyInjection
                 })
                 .AddSingleton<IExtenderCore<TState>>(provider => 
                 {
-                    var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
+                    var cores = new Dictionary<string, Func<IExtensionBase>>();
                     var builder = new ExtenderBuilder<TState>(cores, provider);
 
                     configuration.Invoke(builder, provider);
-                    return new ExtenderCore<TState>(cores);
+                    return new ExtenderCore<TState>(cores.ToConcurrentDictionary());
                 });
         }
 
@@ -43,10 +43,10 @@ namespace Xtender.DependencyInjection
         {
             return services.AddSingleton<IExtenderFactory<TKey, TState>>(provider =>
             {
-                var cores = new ConcurrentDictionary<TKey, Func<IExtenderCore<TState>>>();
+                var cores = new Dictionary<TKey, Func<IExtenderCore<TState>>>();
                 configuration.Invoke(new ExtenderFactoryBuilder<TKey, TState>(cores, provider), provider);
                 
-                return new ExtenderFactory<TKey, TState>(cores);
+                return new ExtenderFactory<TKey, TState>(cores.ToConcurrentDictionary());
             });
         }
 
@@ -67,11 +67,11 @@ namespace Xtender.DependencyInjection
                 })
                 .AddSingleton<IExtenderCore>(provider =>
                 {
-                    var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
+                    var cores = new Dictionary<string, Func<IExtensionBase>>();
                     var builder = new ExtenderBuilder(cores, provider);
 
                     configuration.Invoke(builder, provider);
-                    return new ExtenderCore(cores);
+                    return new ExtenderCore(cores.ToConcurrentDictionary());
                 });
         }
 
@@ -86,10 +86,10 @@ namespace Xtender.DependencyInjection
         {
             return services.AddSingleton<IExtenderFactory<TKey>>(provider =>
             {
-                var cores = new ConcurrentDictionary<TKey, Func<IExtenderCore>>();
+                var cores = new Dictionary<TKey, Func<IExtenderCore>>();
                 configuration.Invoke(new ExtenderFactoryBuilder<TKey>(cores, provider), provider);
 
-                return new ExtenderFactory<TKey>(cores);
+                return new ExtenderFactory<TKey>(cores.ToConcurrentDictionary());
             });
         }
     }

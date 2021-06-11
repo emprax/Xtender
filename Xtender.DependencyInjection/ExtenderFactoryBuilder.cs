@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Xtender.DependencyInjection
@@ -22,11 +21,13 @@ namespace Xtender.DependencyInjection
                 return this;
             }
 
-            var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
+            var cores = new Dictionary<string, Func<IExtensionBase>>();
             var builder = new ExtenderBuilder<TState>(cores, this.provider);
 
             configuration.Invoke(builder);
-            this.extenders.Add(key, () => new ExtenderCore<TState>(cores));
+
+            var results = cores.ToConcurrentDictionary();
+            this.extenders.Add(key, () => new ExtenderCore<TState>(results));
 
             return this;
         }
@@ -50,11 +51,13 @@ namespace Xtender.DependencyInjection
                 return this;
             }
 
-            var cores = new ConcurrentDictionary<string, Func<IExtensionBase>>();
+            var cores = new Dictionary<string, Func<IExtensionBase>>();
             var builder = new ExtenderBuilder(cores, this.provider);
 
             configuration.Invoke(builder);
-            this.extenders.Add(key, () => new ExtenderCore(cores));
+
+            var results = cores.ToConcurrentDictionary();
+            this.extenders.Add(key, () => new ExtenderCore(results));
 
             return this;
         }
