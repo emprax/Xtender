@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using Xtender.Async;
+using Xtender.Sync;
 
 namespace Xtender.Trees
 {
     /// <summary>
     /// The interface for the tree structure.
     /// </summary>
-    public interface ITree : IAccepter, IEnumerable<INode>
+    public interface ITree : IAccepter, IAsyncAccepter, IEnumerable<INode>
     {
         /// <summary>
         /// Root-node of the tree.

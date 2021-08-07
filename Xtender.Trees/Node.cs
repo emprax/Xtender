@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xtender.Async;
+using Xtender.Sync;
 using Xtender.Trees.Builders;
 
 namespace Xtender.Trees
@@ -101,6 +103,8 @@ namespace Xtender.Trees
 
         public IEnumerator GetEnumerator() => ((IEnumerable<INode>)this).GetEnumerator();
 
-        public Task Accept(IExtender extender) => extender.Extend(this);
+        public virtual void Accept(IExtender extender) => extender.Extend(this);
+
+        public virtual Task Accept(IAsyncExtender extender) => extender.Extend(this);
     }
 }

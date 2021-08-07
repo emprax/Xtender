@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xtender.Async;
+using Xtender.Sync;
 using Xtender.Trees.Builders;
 
 namespace Xtender.Trees
@@ -19,7 +21,7 @@ namespace Xtender.Trees
     /// <summary>
     /// The basic node interface for nodes of a tree.
     /// </summary>
-    public interface INode : IAccepter, IEnumerable<INode>
+    public interface INode : IAccepter, IAsyncAccepter, IEnumerable<INode>
     {
         /// <summary>
         /// Getting the identification of the node.
