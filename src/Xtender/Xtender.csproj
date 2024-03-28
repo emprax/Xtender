@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <Company>Emprax</Company>
+    <Authors>Emprax</Authors>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>Xtender-logo.png</PackageIcon>
+    <RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
+    <Copyright />
+    <Description>Extension library based on the Visitor design pattern with the SOLID design principles kept in mind. Useful for building up custom algorithms/extensions for i.e. the traversal of composite structures. There is another package for Dependency Injection usage.</Description>
+    <PackageTags>extension,visitor,composite</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>5.0.0</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\Xtender-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
