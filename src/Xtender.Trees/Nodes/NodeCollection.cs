@@ -31,7 +31,7 @@ public class NodeCollection<TId> : Node<TId>, IEnumerable<KeyValuePair<TId, INod
         set => this.children[id] = value;
     }
 
-    public bool TryGetNode(TId id, out INode<TId> node) => this.children.TryGetValue(id, out node);
+    public bool TryGetNode(TId id, out INode<TId>? node) => this.children.TryGetValue(id, out node);
 
     public bool Add(INode<TId> node) => this.children.TryAdd(node.Id, node);
 

@@ -12,7 +12,7 @@ public interface INode<TId> : IAccepter, IAsyncAccepter where TId : notnull
     string PartitionKey { get; }
 }
 
-public interface INode<TId, TValue> : INode<TId>
+public interface INode<TId, TValue> : INode<TId> where TId : notnull
 {
     TValue Value { get; }
 }

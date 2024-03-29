@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using Xtender.Async;
+using Xtender.Async.Builders;
 using Xtender.DependencyInjection.Async;
-using Xtender.DependencyInjection.New;
 
 namespace Xtender.DependencyInjection;
 

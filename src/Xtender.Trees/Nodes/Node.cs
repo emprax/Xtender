@@ -4,7 +4,7 @@ using Xtender.Sync;
 
 namespace Xtender.Trees.Nodes;
 
-public class Node<TId> : INode<TId>
+public class Node<TId> : INode<TId> where TId : notnull
 {
     public Node(TId id, string partitionKey)
     {
@@ -24,7 +24,7 @@ public class Node<TId> : INode<TId>
     public virtual Task Accept(IAsyncExtender extender) => extender.Extend(this);
 }
 
-public class Node<TId, TValue> : Node<TId>, INode<TId, TValue>
+public class Node<TId, TValue> : Node<TId>, INode<TId, TValue> where TId : notnull
 {
     public Node(TId id, string partitionKey, TValue value) : base(id, partitionKey) => this.Value = value;
 

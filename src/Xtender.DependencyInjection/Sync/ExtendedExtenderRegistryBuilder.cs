@@ -1,5 +1,4 @@
 ﻿using System;
-using Xtender.DependencyInjection.New.Sync;
 using Xtender.Sync.Builders;
 
 namespace Xtender.DependencyInjection.Sync;

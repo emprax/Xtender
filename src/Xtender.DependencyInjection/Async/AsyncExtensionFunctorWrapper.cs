@@ -1,5 +1,4 @@
 ﻿using Xtender.Async;
-using Xtender.DependencyInjection.New.Async;
 
 namespace Xtender.DependencyInjection.Async;
 
