@@ -31,6 +31,8 @@ public class NodeCollection<TId> : Node<TId>, IEnumerable<KeyValuePair<TId, INod
         set => this.children[id] = value;
     }
 
+    public int Count => this.children.Count;
+
     public bool TryGetNode(TId id, out INode<TId>? node) => this.children.TryGetValue(id, out node);
 
     public bool Add(INode<TId> node) => this.children.TryAdd(node.Id, node);
@@ -52,9 +54,9 @@ public class NodeCollection<TId, TValue> : NodeCollection<TId>, INode<TId, TValu
 {
     public NodeCollection(TId id, string partitionKey, TValue value) : base(id, partitionKey, Enumerable.Empty<INode<TId>>()) => this.Value = value;
 
-    public NodeCollection(TId id, string partitionKey, IEnumerable<INode<TId>> children, TValue value) : base(id, partitionKey, children) => this.Value = value;
+    public NodeCollection(TId id, string partitionKey, TValue value, IEnumerable<INode<TId>> children) : base(id, partitionKey, children) => this.Value = value;
 
-    public NodeCollection(TId id, string partitionKey, IDictionary<TId, INode<TId>> children, TValue value) : base(id, partitionKey, children) => this.Value = value;
+    public NodeCollection(TId id, string partitionKey, TValue value, IDictionary<TId, INode<TId>> children) : base(id, partitionKey, children) => this.Value = value;
 
     public TValue Value { get; }
 }

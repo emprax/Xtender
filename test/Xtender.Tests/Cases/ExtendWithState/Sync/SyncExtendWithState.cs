@@ -1,25 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xtender.Async;
 using Xtender.DependencyInjection;
+using Xtender.Sync;
 
-namespace Xtender.Example.Console.Cases.ExtendWithState.Async;
+namespace Xtender.Tests.Cases.ExtendWithState.Sync;
 
-internal class AsyncExtendWithState
+internal class SyncExtendWithState
 {
-    public static async Task Execute()
+    public static void Execute(Writer writer)
     {
         var extender = new ServiceCollection()
-            .AddAsyncXtender<int>(builder => builder
+            .AddXtender<int>(builder => builder
                 .Attach<Element, ElementExtension>()
                 .Attach<Composite, CompsiteExtension>())
+            .AddSingleton(writer)
             .BuildServiceProvider()
-            .GetRequiredService<IAsyncExtender<int>>();
+            .GetRequiredService<IExtender<int>>();
 
         extender.State = 123;
 
-        await System.Console.Out.WriteLineAsync("Case: AsyncExtendWithState");
+        System.Console.Out.WriteLine("Case: SyncExtendWithState");
         var item = new Composite("Level 1", new Dictionary<string, IElement>
         {
             ["Level 2.A"] = new Composite("Level 2.A", new Dictionary<string, IElement>
@@ -42,6 +42,6 @@ internal class AsyncExtendWithState
             })
         });
 
-        await item.Accept(extender);
+        item.Accept(extender);
     }
 }

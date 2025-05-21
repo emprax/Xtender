@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xtender.Async;
 using Xtender.DependencyInjection;
+using Xtender.Tests.Cases;
 
-namespace Xtender.Example.Console.Cases.ExtendWithState.Async;
+namespace Xtender.Tests.Cases.ExtendWithState.Async;
 
 internal class AsyncExtendWithState
 {
-    public static async Task Execute()
+    public static async Task Execute(Writer writer)
     {
         var extender = new ServiceCollection()
             .AddAsyncXtender<int>(builder => builder
                 .Attach<Element, ElementExtension>()
                 .Attach<Composite, CompsiteExtension>())
+            .AddSingleton(writer)
             .BuildServiceProvider()
             .GetRequiredService<IAsyncExtender<int>>();
 

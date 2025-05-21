@@ -19,6 +19,8 @@ public class IdCollection<TId> : Node<TId>, IEnumerable<TId> where TId : notnull
         this.Type = "id-collection";
     }
 
+    public int Count => this.children.Count;
+
     public bool Contains(TId id) => this.children.Contains(id);
 
     public bool Add(TId id) => this.children.Add(id);
@@ -38,7 +40,7 @@ public class IdCollection<TId, TValue> : IdCollection<TId>, INode<TId, TValue> w
 {
     public IdCollection(TId id, string partitionKey, TValue value) : base(id, partitionKey) => this.Value = value;
 
-    public IdCollection(TId id, string partitionKey, IEnumerable<TId> children, TValue value) : base(id, partitionKey, children) => this.Value = value;
+    public IdCollection(TId id, string partitionKey, TValue value, IEnumerable<TId> children) : base(id, partitionKey, children) => this.Value = value;
 
     public TValue Value { get; }
 }

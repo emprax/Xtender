@@ -4,22 +4,21 @@ using System.Threading.Tasks;
 using Xtender.Async;
 using Xtender.DependencyInjection;
 
-namespace Xtender.Example.Console.Cases.ExtendWithState.Async;
+namespace Xtender.Tests.Cases.ExtendWithoutState.Async;
 
-internal class AsyncExtendWithState
+internal class AsyncExtendWithoutState
 {
-    public static async Task Execute()
+    public static async Task Execute(Writer writer)
     {
         var extender = new ServiceCollection()
-            .AddAsyncXtender<int>(builder => builder
+            .AddAsyncXtender(builder => builder
                 .Attach<Element, ElementExtension>()
                 .Attach<Composite, CompsiteExtension>())
+            .AddSingleton(writer)
             .BuildServiceProvider()
-            .GetRequiredService<IAsyncExtender<int>>();
+            .GetRequiredService<IAsyncExtender>();
 
-        extender.State = 123;
-
-        await System.Console.Out.WriteLineAsync("Case: AsyncExtendWithState");
+        await System.Console.Out.WriteLineAsync("Case: AsyncExtendWithoutState");
         var item = new Composite("Level 1", new Dictionary<string, IElement>
         {
             ["Level 2.A"] = new Composite("Level 2.A", new Dictionary<string, IElement>
