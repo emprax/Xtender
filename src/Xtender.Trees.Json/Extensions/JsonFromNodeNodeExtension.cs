@@ -7,13 +7,13 @@ using Xtender.Trees.Nodes;
 
 namespace Xtender.Trees.Json.Extensions;
 
-public class JsonFromNodeNodeExtension<TId, TValue>(TypeKeyProvider provider) : IExtension<FromNodeConversionState<JsonObject>, Node<TId, TValue>>
+public class JsonFromNodeNodeExtension<TId, TValue> : IExtension<FromNodeConversionState<JsonObject>, Node<TId, TValue>>
     where TId : notnull
     where TValue : class
 {
     public void Extend(Node<TId, TValue> context, IExtender<FromNodeConversionState<JsonObject>> extender)
     {
-        var type = provider.Invoke(typeof(TValue));
+        var type = extender.State.Provider.Invoke(typeof(TValue));
         extender.State.Results.Add(new JsonObject(new Dictionary<string, JsonNode>
         {
             ["_id"] = JsonValue.Create(context.Id),

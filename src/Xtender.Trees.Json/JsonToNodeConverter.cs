@@ -1,6 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
+using Xtender.Sync;
+using Xtender.Trees.Abstractions;
 using Xtender.Trees.Abstractions.Converters;
+using Xtender.Trees.Json.Extensions;
 using Xtender.Trees.Nodes;
 
 namespace Xtender.Trees.Json;
@@ -54,7 +57,7 @@ namespace Xtender.Trees.Json;
 //    }
 //}
 
-public class JsonToNodeConverter<TId>(INodeConverterRegistry<TId, JsonObject> registry) : ToNodeConverter<TId, JsonObject>(registry) where TId : JsonNode
+public class JsonToNodeConverter<TId>(INodeConverterRegistry<TId, JsonObject> registry) : ToNodeConverter<TId, JsonObject>(registry) where TId : notnull
 {
     public override JsonObject GetCustomObject(JsonObject node) => node["_customObject"].AsObject();
 

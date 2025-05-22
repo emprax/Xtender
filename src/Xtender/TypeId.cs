@@ -1,18 +1,26 @@
-﻿namespace Xtender;
+﻿using System.Threading;
+
+namespace Xtender;
 
 internal static class TypeId
 {
-    private static readonly object @lock = new();
+    private static readonly SemaphoreSlim semaphore = new(1);
     private static long Value = 0L;
 
     internal static long Increment()
     {
-        lock (@lock)
+        semaphore.Wait();
+
+        try
         {
             var value = Value;
             Value++;
 
             return value;
+        }
+        finally
+        {
+            semaphore.Release();
         }
     }
 
