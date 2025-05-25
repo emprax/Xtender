@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.Trees", "src\Xtende
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtender.Tests", "test\Xtender.Tests\Xtender.Tests.csproj", "{C9A063C8-580C-4233-BA75-9E19F13B4D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Trees.Json", "src\Xtender.Trees.Json\Xtender.Trees.Json.csproj", "{06D4DC45-0935-4AB0-A967-BC87060AB175}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtender.Trees.Serialization", "src\Xtender.Trees.Json\Xtender.Trees.Serialization.csproj", "{06D4DC45-0935-4AB0-A967-BC87060AB175}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

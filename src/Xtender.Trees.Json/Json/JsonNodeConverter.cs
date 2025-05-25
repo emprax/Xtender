@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
-using Xtender.Trees.Abstractions.Converters;
 using Xtender.Trees.Nodes;
+using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Json;
+namespace Xtender.Trees.Serialization.Json;
 
 public class JsonNodeConverter<TId, TValue> : INodeConverter<TId, JsonObject>
     where TId : notnull

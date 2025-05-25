@@ -3,24 +3,20 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Xtender.Sync;
-using Xtender.Trees.Abstractions.Converters;
 using Xtender.Trees.Nodes;
+using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Json.Extensions;
+namespace Xtender.Trees.Serialization.Json.Extensions;
 
-public class JsonFromNodeNodeCollectionExtension<TId, TValue> : IExtension<FromNodeConversionState<JsonObject>, NodeCollection<TId, TValue>>
+public class JsonFromNodeIdCollectionExtension<TId, TValue> : IExtension<FromNodeConversionState<JsonObject>, IdCollection<TId, TValue>>
     where TId : notnull
     where TValue : class
 {
-    public void Extend(NodeCollection<TId, TValue> context, IExtender<FromNodeConversionState<JsonObject>> extender)
+    public void Extend(IdCollection<TId, TValue> context, IExtender<FromNodeConversionState<JsonObject>> extender)
     {
         var type = extender.State.Provider.Invoke(typeof(TValue));
         var children = context
-            .Select(x =>
-            {
-                x.Value.Accept(extender);
-                return JsonValue.Create(x.Key);
-            })
+            .Select(x => JsonValue.Create(x))
             .ToArray();
 
         extender.State.Results.Add(new JsonObject(new Dictionary<string, JsonNode>

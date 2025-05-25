@@ -1,6 +1,6 @@
-﻿using Xtender.Trees.Abstractions.Converters;
+﻿using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Builders;
+namespace Xtender.Trees.Serialization.Builders;
 
 public interface IConverterBuilder<TId, TTransferObject> : IConverterBuildClient<TId, TTransferObject>
     where TId : notnull

@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Nodes;
 using Xtender.Sync;
-using Xtender.Trees.Abstractions;
-using Xtender.Trees.Abstractions.Converters;
-using Xtender.Trees.Json.Extensions;
 using Xtender.Trees.Nodes;
+using Xtender.Trees.Serialization.Abstractions;
+using Xtender.Trees.Serialization.Abstractions.Converters;
+using Xtender.Trees.Serialization.Json.Extensions;
 
-namespace Xtender.Trees.Json;
+namespace Xtender.Trees.Serialization.Json;
 
 public class JsonNodeConverterSchema<TId> : INodeConverterSchema<TId, JsonObject> where TId : notnull
 {

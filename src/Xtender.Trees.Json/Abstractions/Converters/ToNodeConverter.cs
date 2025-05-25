@@ -1,6 +1,6 @@
 ﻿using Xtender.Trees.Nodes;
 
-namespace Xtender.Trees.Abstractions.Converters;
+namespace Xtender.Trees.Serialization.Abstractions.Converters;
 
 public abstract class ToNodeConverter<TId, TTransferObject> : IToNodeConverter<TId, TTransferObject>
     where TId : notnull

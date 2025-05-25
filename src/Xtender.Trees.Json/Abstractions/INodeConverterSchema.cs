@@ -1,8 +1,8 @@
 ﻿using Xtender.Sync;
-using Xtender.Trees.Abstractions.Converters;
 using Xtender.Trees.Nodes;
+using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Abstractions;
+namespace Xtender.Trees.Serialization.Abstractions;
 
 public interface INodeConverterSchema<TId, TTransferObject>
     where TId : notnull

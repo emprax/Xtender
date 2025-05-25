@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
@@ -6,9 +6,9 @@
 		<Authors>Emprax</Authors>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<PackageIcon>Xtender-logo.png</PackageIcon>
-		<Description>The JSON extension for the Xtender.Trees library, providing the utilities to easily convert JSON from and to tree-structures.</Description>
+		<Description>The serialization extension for the Xtender.Trees library, providing the utilities to easily convert JSON, XML and YAML from and to tree-structures.</Description>
 		<RepositoryUrl>https://github.com/emprax/Xtender</RepositoryUrl>
-		<PackageTags>extension,visitor,composite,tree,node,json</PackageTags>
+		<PackageTags>extension,visitor,composite,tree,node,json,xml,yaml,yml,converter,serialization,serialize</PackageTags>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Version>1.0.0</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -28,6 +28,7 @@
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
 	  <PackageReference Include="System.Text.Json" Version="9.0.5" />
+	  <PackageReference Include="YamlDotNet" Version="16.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>

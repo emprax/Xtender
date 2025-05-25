@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Xtender.DependencyInjection\Xtender.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\Xtender.Trees.Json\Xtender.Trees.Json.csproj" />
+    <ProjectReference Include="..\..\src\Xtender.Trees.Json\Xtender.Trees.Serialization.csproj" />
     <ProjectReference Include="..\..\src\Xtender.Trees\Xtender.Trees.csproj" />
   </ItemGroup>
 

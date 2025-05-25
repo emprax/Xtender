@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using Xtender.Trees.Abstractions;
-using Xtender.Trees.Builders;
+using Xtender.Trees.Serialization.Abstractions;
+using Xtender.Trees.Serialization.Builders;
 
-namespace Xtender.Trees;
+namespace Xtender.Trees.Serialization;
 
 public static class ModuleInitializer
 {

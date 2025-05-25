@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Xtender.Trees;
+namespace Xtender.Trees.Serialization;
 
 public delegate string TypeKeyProvider(Type type);

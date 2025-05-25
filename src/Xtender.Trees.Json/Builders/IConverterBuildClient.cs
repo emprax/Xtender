@@ -1,4 +1,4 @@
-﻿namespace Xtender.Trees.Builders;
+﻿namespace Xtender.Trees.Serialization.Builders;
 
 public interface IConverterBuildClient<TId, TTransferObject>
     where TId : notnull

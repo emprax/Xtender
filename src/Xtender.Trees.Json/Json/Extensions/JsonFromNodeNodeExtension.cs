@@ -2,10 +2,10 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Xtender.Sync;
-using Xtender.Trees.Abstractions.Converters;
 using Xtender.Trees.Nodes;
+using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Json.Extensions;
+namespace Xtender.Trees.Serialization.Json.Extensions;
 
 public class JsonFromNodeNodeExtension<TId, TValue> : IExtension<FromNodeConversionState<JsonObject>, Node<TId, TValue>>
     where TId : notnull

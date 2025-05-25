@@ -1,4 +1,4 @@
-﻿namespace Xtender.Trees.Abstractions.Converters;
+﻿namespace Xtender.Trees.Serialization.Abstractions.Converters;
 
 public interface INodeConverterRegistry<TId, TTransferObject>
     where TId : notnull

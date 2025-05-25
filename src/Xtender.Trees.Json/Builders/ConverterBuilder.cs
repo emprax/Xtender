@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Xtender.Sync.Builders;
-using Xtender.Trees.Abstractions;
-using Xtender.Trees.Abstractions.Converters;
+using Xtender.Trees.Serialization.Abstractions;
+using Xtender.Trees.Serialization.Abstractions.Converters;
 
-namespace Xtender.Trees.Builders;
+namespace Xtender.Trees.Serialization.Builders;
 
 public class ConverterBuilder<TId, TTransferObject>(INodeConverterSchema<TId, TTransferObject> schema) : IConverterBuilder<TId, TTransferObject>
     where TId : notnull

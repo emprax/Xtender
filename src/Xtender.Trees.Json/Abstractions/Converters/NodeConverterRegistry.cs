@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Xtender.Trees.Abstractions.Converters;
+namespace Xtender.Trees.Serialization.Abstractions.Converters;
 
 public class NodeConverterRegistry<TId, TTransferObject> : INodeConverterRegistry<TId, TTransferObject>
     where TId : notnull

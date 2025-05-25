@@ -2,7 +2,7 @@
 using Xtender.Sync;
 using Xtender.Trees.Nodes;
 
-namespace Xtender.Trees.Abstractions.Converters;
+namespace Xtender.Trees.Serialization.Abstractions.Converters;
 
 public class NodeConverterClient<TId, TTransferObject> : INodeConverterClient<TId, TTransferObject>
     where TId : notnull

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xtender.Trees.Nodes;
 
-namespace Xtender.Trees.Abstractions.Converters;
+namespace Xtender.Trees.Serialization.Abstractions.Converters;
 
 public interface INodeConverterClient<TId, TTransferObject>
     where TId : notnull
