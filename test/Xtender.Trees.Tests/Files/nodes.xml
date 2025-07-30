@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+  <node>
+    <_id>8fe3c05b-0da8-4fee-afb4-bc6e5edec1b8</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>learning-year</_type>
+    <_customObject>
+      <Value>1</Value>
+    </_customObject>
+    <_children>
+      <_id>ee3f3e62-25ce-467c-96cd-bbae576411e7</_id>
+    </_children>
+  </node>
+  <node>
+    <_id>ee3f3e62-25ce-467c-96cd-bbae576411e7</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>school-year</_type>
+    <_customObject>
+      <Value>2025/2026</Value>
+    </_customObject>
+    <_children>
+      <_id>4fe12013-b4d9-4350-b8b7-bd998067a554</_id>
+      <_id>a375ba10-9743-4c17-95d6-78674efbe525</_id>
+    </_children>
+  </node>
+  <node>
+    <_id>4fe12013-b4d9-4350-b8b7-bd998067a554</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>course</_type>
+    <_customObject>
+      <Name>Mathematics</Name>
+      <Direction>D1</Direction>
+    </_customObject>
+    <_children>
+      <_id>31a97706-8c97-4e96-9acc-f531b24690e9</_id>
+    </_children>
+  </node>
+  <node>
+    <_id>a375ba10-9743-4c17-95d6-78674efbe525</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>course</_type>
+    <_customObject>
+      <Name>Geo</Name>
+      <Direction>D1</Direction>
+    </_customObject>
+    <_children>
+      <_id>d86aa6b9-915b-495e-99a4-5cb307a549df</_id>
+    </_children>
+  </node>
+  <node>
+    <_id>31a97706-8c97-4e96-9acc-f531b24690e9</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>material</_type>
+    <_customObject>
+      <Title>Counters</Title>
+      <Sku>1234567891011</Sku>
+      <Price>42.50</Price>
+      <Author>J.A. Sutherland</Author>
+      <Publisher>Johnsons publications</Publisher>
+    </_customObject>
+    <_children>
+    </_children>
+  </node>
+  <node>
+    <_id>d86aa6b9-915b-495e-99a4-5cb307a549df</_id>
+    <_partitionKey>1111</_partitionKey>
+    <_type>material</_type>
+    <_customObject>
+      <Title>Around Earth</Title>
+      <Sku>1234567891012</Sku>
+      <Price>37.98</Price>
+      <Author>K. Halford</Author>
+      <Publisher>Johnsons publications</Publisher>
+    </_customObject>
+    <_children>
+    </_children>
+  </node>
+</nodes>
