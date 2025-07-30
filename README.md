@@ -9,7 +9,7 @@ NuGet package pages:
 
 ## Introduction
 
-A segmented visitor library to solidify the visitor pattern. The origin of the idea will be discussed in the background section, together with the problem in regards to the SOLID design principles. It will briefly touch upon one of original NuGet versions of this library in regards to the so-called V1/V2 approach.  Further sections will explain how the approach works.
+A segmented visitor library to solidify the visitor pattern. The origin of the idea will be discussed in the background section, together with the problem in regards to the SOLID design principles. We will briefly touch upon one of original NuGet versions of this library in regards to the so-called V1/V2 approach section. Further sections will explain how the library works.
 
 Specific use-cases for this library can be found in section [**Which Problems to solve**](#which-problems-to-solve), specifically in subsection [**Possible UseCases**](#possible-usecases).
 
@@ -79,7 +79,7 @@ A second version was established to solve the aforementioned disadvantage in eff
 
 The dictionary (a map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and the dictionary calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced by the chain-based version. This version operates more constantly in speed and efficiency.
 
-*From version 3.1.0. of the Xtender.DependencyInjection package on, the control on the capacity of the dictionaries in the full Xtender library packages is improved. Instead of having a default capacity of 31 records, the capacities of the dictionaries are now configured by means of the amount of registered extensions.*
+*From version 3.1.0. of the Xtender.DependencyInjection package onwards, the control on the capacity of the dictionaries in the full Xtender library packages are improved. Instead of having a default capacity of 31 records, the capacities of the dictionaries are now configured by means of the amount of registered extensions.*
 
 ## Coding Guide
 
@@ -251,7 +251,6 @@ var serviceProvider = new ServiceCollection()
     .AddXtender<string>((builder, provider) =>
     {
         builder
-            .Default<MyDefaultExtension>()
             .Attach<Item, StatefulItemExtension>()
             .Attach<Composite, CompositeExtension>(() => new CompositeExtension());
     })
@@ -288,7 +287,6 @@ var serviceProvider = new ServiceCollection()
     .AddAsyncXtender((builder, provider) =>
     {
         builder
-            .Default<MyDefaultExtension>()
             .Attach<Item, ItemExtension>()
             .Attach<Composite, CompositeExtension>(() => new CompositeExtension());
     })
@@ -299,8 +297,8 @@ Here both the aforementioned ItemExtension and the CompositeExtension are linked
 
 **Notice:**
 
-- The builder always starts with *Default<TDefaultExtension>()* (this method has an override) that ensures that there is a default extension being set for when a lookup for a certain extension for a specific concrete type results in it not being found. Then this default extension could handle these 'default' cases.
-- The builder will give rise to a specific extender-core which will be registered as a **Singleton** dependency, though, the refreshment of the extensions is ensured by letting the extender replay a providing-lambda stored in the dictionary on the given key. It should be noted that when a developer wants to store multiple extenders with the same visitor-state, he/she should use the ExtenderFactory methodology or use libraries like: [ModulR](https://github.com/emprax/ModulR).
+- The builder can start with *Default<TDefaultExtension>()* (this method has an override) registers a default extension being set for when a lookup for a certain extension for a specific concrete type results in it not being found. Then this default extension could handle these 'default' cases.
+- The builder will give rise to a specific extender-core which will be registered as a **Singleton** dependency. Though, the extensions are refreshed to also support transient and scoped dependencies, ensured by letting the extender replay a providing-lambda stored in the dictionary on the given key. It should be noted that when a developer wants to store multiple extenders with the same visitor-state, he/she should use the ExtenderFactory methodology or use libraries like: [ModulR](https://github.com/emprax/ModulR).
 
 Sync:
 
@@ -311,8 +309,7 @@ var serviceProvider = new ServiceCollection()
     {
         builder.WithExtender("build-up", bldr =>
         {
-            bldr.Default()
-                .Attach<Order, OrderCreateExtension>()
+            bldr.Attach<Order, OrderCreateExtension>()
                 .Attach<OrderLine, StatefulOrderLineCreateExtension>()
                 .Attach<Address, OrderAddressCreateExtension>()
         });
@@ -340,8 +337,7 @@ var serviceProvider = new ServiceCollection()
         
         builder.WithExtender("attachments", bldr =>
         {
-            bldr.Default()
-                .Attach<OrderAttachment, OrderAttachmentCreateExtension>()
+            bldr.Attach<OrderAttachment, OrderAttachmentCreateExtension>()
                 .Attach<Address, OrderAttachmentAddressCreateExtension>()
         });
     })
@@ -357,8 +353,7 @@ var serviceProvider = new ServiceCollection()
     {
         builder.WithExtender("build-up", bldr =>
         {
-            bldr.Default()
-                .Attach<Order, OrderCreateExtension>()
+            bldr.Attach<Order, OrderCreateExtension>()
                 .Attach<OrderLine, StatefulOrderLineCreateExtension>()
                 .Attach<Address, OrderAddressCreateExtension>()
         });
@@ -386,8 +381,7 @@ var serviceProvider = new ServiceCollection()
         
         builder.WithExtender("attachments", bldr =>
         {
-            bldr.Default()
-                .Attach<OrderAttachment, OrderAttachmentCreateExtension>()
+            bldr.Attach<OrderAttachment, OrderAttachmentCreateExtension>()
                 .Attach<Address, OrderAttachmentAddressCreateExtension>()
         });
     })
@@ -530,7 +524,7 @@ await composition.Accept(extender);
 
 The Xtender.Trees package provides the means of creating tree-structures where the tree-nodes implement the IAccepter and IAsyncAccepter interfaces, so the Xtender functionality can be applied to this tree. This tree-structure is provided because of it being one of the ultimate structures that can be visited. As stated before, the composite pattern works quite well with the visitor pattern because of the abstract fashion of composites and the abililty for the visitor pattern to traverse and visit these nodes in their concrete form.
 
-The Xtender.Trees package provides the tree and node interfaces as well as a tree-builder and a node-builder to quickly construct trees and nodes.
+The Xtender.Trees package provides the node interfaces as well as node-builders and converts to quickly construct tree-structures and convert them to and from JSON/XML structures.
 
 ## Which Problems to solve
 
@@ -552,4 +546,4 @@ Possible use-cases for when to use this algorithm could, for example, be somethi
 
   Now it would be quite difficult to apply rules directly on the composite structure, so the visitor pattern would be an obvious choice to achieve accessibility. Now with multiple schools being attached at different times and schools that are already registered having differentiating demands in their structures could be problematic to maintain with a simple visitor. That has to do with a lot of changes that have to be applied, while this could also bring a lot of new problems. So a nice solution would be to use the Xtender library to solve those problems as well.
 
-- The health-insurance system would take quite a similar approach as the school-system. Now instead of school-layouts this would be the something like the layout of different policies or customizable declarations/contracts in regards to treatments for patients that can be more fine-grained and flexible. Consider for moment that those structures would be quite extensive as multiple hundreds of different combinations are possible. So again to apply rules, operations, validations or whatever to the structure, it would be quite useful to apply the Xtender library for this specific use-case.
+- The health-insurance system would take quite a similar approach as that of the school-system. Now instead of school-layouts this would be the something like the layout of different policies or customizable declarations/contracts in regards to treatments for patients that can be more fine-grained and flexible. Consider for a moment that those structures would be quite extensive as multiple hundreds of different combinations are possible. So again to apply rules, operations, validations or whatever to the structure, it would be quite useful to apply the Xtender library for this specific use-case and extend functionalities such as new or changing policies.
