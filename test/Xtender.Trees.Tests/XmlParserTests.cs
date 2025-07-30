@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json.Nodes;
+using System.Xml;
 using Xtender.Trees.Nodes;
 using Xtender.Trees.Serialization;
 using Xtender.Trees.Serialization.Abstractions.Converters;
@@ -7,10 +7,10 @@ using Xtender.Trees.Tests.Models;
 
 namespace Xtender.Trees.Tests;
 
-public class JsonParserTests
+public class XmlParserTests
 {
     [Fact]
-    public void ShouldConvertNodeToJsonComponents()
+    public void ShouldConvertNodeToXmlComponents()
     {
         // Arrange
         var converter = new ServiceCollection()
@@ -18,9 +18,10 @@ public class JsonParserTests
                 .Mapping<TestClass1>("test1")
                 .Mapping<TestClass2>("test2")
                 .Mapping<TestClass3>("test3"))
+            .WithXmlConverter()
             .Services
             .BuildServiceProvider()
-            .GetRequiredService<INodeConverterClient<Guid, JsonNode>>();
+            .GetRequiredService<INodeConverterClient<Guid, XmlNode>>();
 
         var collection = new NodeCollection<Guid, TestClass3>(Guid.NewGuid(), "v1", new("V1", DateTime.UtcNow))
         {
@@ -57,7 +58,8 @@ public class JsonParserTests
         // Act
         var result = converter
             .FromNode(collection)
-            .Select(x => x.ToJsonString())
+            .Select(x => x.OuterXml)
+            .Where(x => x is not null)
             .ToArray();
 
         // Assert
@@ -66,18 +68,20 @@ public class JsonParserTests
         Assert.Contains("_partitionKey", result[0]);
         Assert.Contains("_type", result[0]);
         Assert.Contains("_customObject", result[0]);
-        Assert.Contains("{\"Name\":\"V1.1.1\"}", result[0]);
-        Assert.Contains("\"_children\":[]", result[0]);
+        Assert.Contains("<Name>V1.1.1</Name>", result[0]);
     }
 
     [Fact]
-    public void ShouldConvertJsonToNodes()
+    public void ShouldConvertXmlToNodes()
     {
         // Arrange
-        var nodes = JsonNode
-            .Parse(File.ReadAllText(Path.Combine("Files", "nodes.json")))!
-            .AsObject()!["nodes"]!
-            .AsArray();
+        var doc = new XmlDocument();
+        doc.LoadXml(File.ReadAllText(Path.Combine("Files", "nodes.xml")));
+
+        var nodes = doc
+            .SelectSingleNode("nodes")!
+            .Cast<XmlNode>()
+            .ToArray();
 
         var converter = new ServiceCollection()
             .AddNodeConverter<Guid>(b => b
@@ -85,28 +89,29 @@ public class JsonParserTests
                 .Mapping<SchoolYear>("school-year")
                 .Mapping<Course>("course")
                 .Mapping<Material>("material"))
+            .WithXmlConverter()
             .Services
             .BuildServiceProvider()
-            .GetRequiredService<INodeConverterClient<Guid, JsonNode>>();
+            .GetRequiredService<INodeConverterClient<Guid, XmlNode>>();
 
         // Act
         var results = nodes
-            .Select(x => converter.ToNode(x!.AsObject()))
+            .Select(converter.ToNode)
             .Cast<IdCollection<Guid>>()
             .ToArray();
 
         // Assert
-        Assert.Equal(nodes.Count, results.Length);
-        for (var index = 0; index < nodes.Count; index++)
+        Assert.Equal(nodes.Length, results.Length);
+        for (var index = 0; index < nodes.Length; index++)
         {
-            Assert.Equal(nodes[index]!["_id"]!.GetValue<Guid>(), results[index].Id);
-            Assert.Equal(nodes[index]!["_partitionKey"]!.GetValue<string>(), results[index].PartitionKey);
+            Assert.Equal(Guid.Parse(nodes[index]!.SelectSingleNode("_id")!.FirstChild!.Value!), results[index].Id);
+            Assert.Equal(nodes[index]!.SelectSingleNode("_partitionKey")!.FirstChild!.Value!, results[index].PartitionKey);
             Assert.Equal("id-collection", results[index].Type);
 
             var counter = 0;
             foreach (var id in results[index])
             {
-                Assert.Equal(nodes[index]!["_children"]!.AsArray()[counter]!.GetValue<Guid>(), id);
+                Assert.Equal(Guid.Parse(nodes[index]!.SelectSingleNode("_children")!.ChildNodes[counter]!.Value!), id);
             }
         }
     }

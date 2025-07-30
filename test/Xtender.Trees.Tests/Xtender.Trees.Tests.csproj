@@ -24,8 +24,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Xtender.DependencyInjection\Xtender.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\Xtender.Trees.Json\Xtender.Trees.Serialization.csproj" />
     <ProjectReference Include="..\..\src\Xtender.Trees\Xtender.Trees.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Files\nodes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\nodes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

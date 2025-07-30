@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "_id": "8fe3c05b-0da8-4fee-afb4-bc6e5edec1b8",
+      "_partitionKey": "1111",
+      "_type": "learning-year",
+      "_customObject": {
+        "value": 1
+      },
+      "_children": [
+        "ee3f3e62-25ce-467c-96cd-bbae576411e7"
+      ]
+    },
+    {
+      "_id": "ee3f3e62-25ce-467c-96cd-bbae576411e7",
+      "_partitionKey": "1111",
+      "_type": "school-year",
+      "_customObject": {
+        "value": "2025/2026"
+      },
+      "_children": [
+        "4fe12013-b4d9-4350-b8b7-bd998067a554",
+        "a375ba10-9743-4c17-95d6-78674efbe525"
+      ]
+    },
+    {
+      "_id": "4fe12013-b4d9-4350-b8b7-bd998067a554",
+      "_partitionKey": "1111",
+      "_type": "course",
+      "_customObject": {
+        "name": "Mathematics",
+        "direction": "D1"
+      },
+      "_children": [
+        "31a97706-8c97-4e96-9acc-f531b24690e9"
+      ]
+    },
+    {
+      "_id": "a375ba10-9743-4c17-95d6-78674efbe525",
+      "_partitionKey": "1111",
+      "_type": "course",
+      "_customObject": {
+        "name": "Geo",
+        "direction": "D1"
+      },
+      "_children": [
+        "d86aa6b9-915b-495e-99a4-5cb307a549df"
+      ]
+    },
+    {
+      "_id": "31a97706-8c97-4e96-9acc-f531b24690e9",
+      "_partitionKey": "1111",
+      "_type": "material",
+      "_customObject": {
+        "title": "Counters",
+        "sku": "1234567891011",
+        "price": 42.50,
+        "author": "J.A. Sutherland",
+        "publisher": "Johnsons publications"
+      },
+      "_children": []
+    },
+    {
+      "_id": "d86aa6b9-915b-495e-99a4-5cb307a549df",
+      "_partitionKey": "1111",
+      "_type": "material",
+      "_customObject": {
+        "title": "Around Earth",
+        "sku": "1234567891012",
+        "price": 37.98,
+        "author": "K. Halford",
+        "publisher": "Johnsons publications"
+      },
+      "_children": []
+    }
+  ]
+}

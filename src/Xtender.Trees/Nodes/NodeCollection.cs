@@ -7,19 +7,19 @@ using Xtender.Sync;
 
 namespace Xtender.Trees.Nodes;
 
-public class NodeCollection<TId> : Node<TId>, IEnumerable<KeyValuePair<TId, INode<TId>>> where TId : notnull
+public abstract class NodeCollection<TId> : Node<TId>, IEnumerable<KeyValuePair<TId, INode<TId>>> where TId : notnull
 {
     private readonly IDictionary<TId, INode<TId>> children;
 
-    public NodeCollection(TId id, string partitionKey) : this(id, partitionKey, Enumerable.Empty<INode<TId>>()) { }
+    protected NodeCollection(TId id, string partitionKey) : this(id, partitionKey, Enumerable.Empty<INode<TId>>()) { }
 
-    public NodeCollection(TId id, string partitionKey, IEnumerable<INode<TId>> children) : base(id, partitionKey)
+    protected NodeCollection(TId id, string partitionKey, IEnumerable<INode<TId>> children) : base(id, partitionKey)
     {
         this.children = children.ToDictionary(x => x.Id, x => x);
         this.Type = "node-collection";
     }
 
-    public NodeCollection(TId id, string partitionKey, IDictionary<TId, INode<TId>> children) : base(id, partitionKey)
+    protected NodeCollection(TId id, string partitionKey, IDictionary<TId, INode<TId>> children) : base(id, partitionKey)
     {
         this.children = children;
         this.Type = "node-collection";
@@ -59,4 +59,8 @@ public class NodeCollection<TId, TValue> : NodeCollection<TId>, INode<TId, TValu
     public NodeCollection(TId id, string partitionKey, TValue value, IDictionary<TId, INode<TId>> children) : base(id, partitionKey, children) => this.Value = value;
 
     public TValue Value { get; }
+
+    public override void Accept(IExtender extender) => extender.Extend(this);
+
+    public override Task Accept(IAsyncExtender extender) => extender.Extend(this);
 }

@@ -7,13 +7,13 @@ using Xtender.Sync;
 
 namespace Xtender.Trees.Nodes;
 
-public class IdCollection<TId> : Node<TId>, IEnumerable<TId> where TId : notnull
+public abstract class IdCollection<TId> : Node<TId>, IEnumerable<TId> where TId : notnull
 {
     private readonly ISet<TId> children;
 
-    public IdCollection(TId id, string partitionKey) : this(id, partitionKey, Enumerable.Empty<TId>()) { }
+    protected IdCollection(TId id, string partitionKey) : this(id, partitionKey, Enumerable.Empty<TId>()) { }
 
-    public IdCollection(TId id, string partitionKey, IEnumerable<TId> children) : base(id, partitionKey)
+    protected IdCollection(TId id, string partitionKey, IEnumerable<TId> children) : base(id, partitionKey)
     {
         this.children = children.ToHashSet();
         this.Type = "id-collection";
@@ -43,4 +43,8 @@ public class IdCollection<TId, TValue> : IdCollection<TId>, INode<TId, TValue> w
     public IdCollection(TId id, string partitionKey, TValue value, IEnumerable<TId> children) : base(id, partitionKey, children) => this.Value = value;
 
     public TValue Value { get; }
+
+    public override void Accept(IExtender extender) => extender.Extend(this);
+
+    public override Task Accept(IAsyncExtender extender) => extender.Extend(this);
 }
