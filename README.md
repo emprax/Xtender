@@ -45,9 +45,9 @@ Use of Accepter object and visiting of all types of objects available since vers
 
 ## Background
 
-Xtender, obviously named after the ability to extend, is a library developed to solidify (conform to the **SOLID** design principles) the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) which is used to separate an algorithm from an object structure, or simply adding a new algorithm to such an object in a flexible way.
+Xtender, naturally named after the ability to extend, is a library developed to solidify (conform to the **SOLID** design principles) the [Visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern), which in it self is used to separate an algorithm from an object structure, or simply adding a new algorithm/functionality to an object in a flexible way. We take a modern approach to the visitor pattern and create a sort of segmented visitor design.
 
-Where the visitor in the visitor pattern is just a single class containing the *Visit* methods for every concrete type in the object structure, the segmented visitor pattern separate this class into segments (separate classes. A class per visit method). Each segment (defined by an abstract definition) defines one of the *Visit* method, which each accept a certain concrete type that needs to be accessed. While this concrete type is visited, it can be extended by applying some additional logic, provided by the visitor segment itself.
+Where the visitor, in the visitor pattern, is just a single class containing the *Visit* method overloads accepting each concrete type in the object structure, the segmented visitor pattern separate this class into segments (separate classes. A class per visit method). Each segment (defined by an abstract definition) defines one of these *Visit* method overloads, where each one accepts one of these concrete types that needs to be accessed. While this concrete type is visited, it is extended by the means of applying new logic, provided by the visitor segment itself to this concrete type (or on behalf of it).
 
 | :exclamation: NOTE​                                           |
 | :----------------------------------------------------------- |
@@ -58,32 +58,30 @@ Where the visitor in the visitor pattern is just a single class containing the *
 What this adds to the already consistent visitor pattern are improvements to adhere even more to the [SOLID](https://en.wikipedia.org/wiki/SOLID) design principles, which most notably are:
 
 - **Single-responsibility principle**: Every segment applies an operation for a single concrete type.
-- **Open-closed principle**: When the object structure (consisting of some objects with a common parent) is extended with more concrete typed objects, the visitor structure could simply be extended by adding a new segment to the collection of visitor segments instead of modifying the visitor class.
-- **Liskov's substitution principle**: The abstractions of the segments are simple and generic enough that these abstractions work perfectly as a basis for every type of segment that is added to the structure. A segment abstraction does not contain more methods or data than what is commonly understood between segments.
-- **Interface segregation principle**: The interface of the segments does only contain what is necessary. More behaviors are separated into multiple different abstractions when needed.
-- **Dependency inversion principle**: The library components are all depending on abstractions instead of concrete implementations.
+- **Open-closed principle**: When the object structure (consisting of objects with a common parent) is extended with more concrete typed objects, the visitor structure could simply be extended by adding a new segment to the collection of visitor segments instead of modifying the visitor class itself.
+- **Liskov's substitution principle**: The abstraction of a segment is simple and generic in that it works perfectly as a base-line for every type of segment that is added to the structure. A segment abstraction does not contain more methods or data than what is commonly understood between segments.
+- **Interface segregation principle**: The interface of the segments does only contain what is necessary. Other behaviors are separated from the existing abstractions and put into different abstractions when needed.
+- **Dependency inversion principle**: Each components in this library depends on abstractions instead of concrete implementations.
 
 ### Chain-based
 
-The first version that was considered when implementing the Xtender library has been the use of the Decorator Pattern/Chain-of-responsibility Pattern, because of its pipeline and request-handler-style-as-segments approach. It provides a natural way of extension by linking the segments and checking the input.
+The first version that was considered when implementing the Xtender library has been through the use of the Decorator Pattern/Chain-of-responsibility Pattern, because of its pipeline and request-handler-style-as-segments approach. It provides a natural way of extension by linking the segments and checking the input, providing extendable and flexible choice.
 
 ![Xtender-V1](docs/Xtender-V1.png)
 
-It comes down to an approach where a client is used that holds a reference to the root-segment in the chain. The client executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment that can accept the type of the object that is inputted and puts that object into the Extend method of the selected segment. This detection is achieved by doing a type check, and when matching, casting the object to the specific concrete implementation it is specified to be. For a short chain there is no major problem in this approach, although, when adding more segments to the chain, it takes longer on average to find the matching segment. The complexity of this solution is therefore of O(n). It has the tendency to move away from a constant efficiency.
+It comes down to an approach where a client is used that holds a reference to the root-segment in the chain. The client executes the operation process by simply calling the entry-point on the root-segment and then traverses through the chain until it finds the suitable segment that can accept the type of the object that is inputted. This detection is achieved by doing a type check, and when matching, casting the object to the specific concrete implementation it is specified to be. Then it puts that object into the Extend method of the selected segment. For a short chain this is a viable solution, however, when adding more segments to the chain, it will on average take longer to find the matching segment over time. The complexity of this solution is therefore of O(n), when put in Big-O notation. It has the tendency to move away from a constant efficiency.
 
 ### Hash-map based
 
-A second version was established to solve the aforementioned disadvantage in efficiency. The main difference with this version and the aformentioned one is that the handlers/segments are stored in a dictionary instead of chaining them together. 
+A second version was established to solve the aforementioned disadvantage in efficiency. The main difference, compared to the previous version, is that the handlers/segments are stored in a dictionary instead of chaining them together. 
 
 ![Xtender-V2](docs/Xtender-V2.png)
 
-The dictionary (a map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and the dictionary calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced by the chain-based version. This version operates more constantly in speed and efficiency.
-
-*From version 3.1.0. of the Xtender.DependencyInjection package onwards, the control on the capacity of the dictionaries in the full Xtender library packages are improved. Instead of having a default capacity of 31 records, the capacities of the dictionaries are now configured by means of the amount of registered extensions.*
+The dictionary (a map-like structure implemented with a hash-map) is a well-known collective data-structure that can save a value on a location that is linked to a key. The key can be of any data-type and the dictionary calculates a hash-value for that key, which indicates its index in memory. The search functionality of the dictionary is known to be of complexity O(1). Implementing a dictionary as a registry for storing the different segments greatly increases search-efficiency by reducing the complexity introduced by the chain-based version. This version has a more constant efficiency.
 
 ## Coding Guide
 
-This section emphasizes the important components of the library through some coding examples. We first start with the definition of some of the components in regard to their purpose and location within an application. **Be aware** of both the stateful (with TState generics) and stateless versions of the library. The state property that is provided by the stateful IExtender/IAsyncExtender is nothing more than a simple storage container for temporary data, because a normal visitor could also save such data inside its class fields/properties, so this is a nod to that ability. Nevertheless, the stateless version is there to support visiting without state storing. 
+This section emphasizes the important components of the library through different coding examples. First, we start with the definition of certain components, with the focus on their purpose and location within an application. **Be aware** of both the stateful (with TState generics) and stateless versions of the library. The state property that is provided by the stateful IExtender/IAsyncExtender is nothing more than a simple storage container for temporary data, because a normal visitor could also save such data inside its class fields/properties, so this is a nod to that ability. Nevertheless, the stateless version is there to support visiting without state storing. 
 
 What has to be noted is that the stateful version of the IExtender/IAsyncExtender can be registered with both stateful and stateless versions of the extensions, though the stateless IExtender/IAsyncExtender can only use stateless extensions. The cause for this difference is that the stateful extensions could depend on state from the stateful IExtender/IAsyncExtender version, so the stateless IExtender/IAsyncExtender version is incompatible with that, whereas the stateless extensions do accept a higher abstraction of IExtender/IAsyncExtender, which the stateful IExtender/IAsyncExtender extends from, so nothing will be harmed there.
 
@@ -94,7 +92,7 @@ The accepter is the object that can be visited/extended. In most cases this woul
 Sync:
 
 ```c#
-public abstract Component : IAccepter
+public abstract class Component : IAccepter
 {
     public abstract void Accept(IExtender extender);
 }
@@ -117,7 +115,7 @@ public class Composite : Component
 Async:
 
 ```c#
-public abstract Component : IAsyncAccepter
+public abstract class Component : IAsyncAccepter
 {
     public abstract Task Accept(IAsyncExtender extender);
 }
@@ -157,7 +155,7 @@ Async:
 
 ````c#
 int integer = 3;
-new AsyncAccepter<int>(integer).Accept(extender);
+await new AsyncAccepter<int>(integer).Accept(extender);
 
 // OR by the us of the extension-method:
 await integer.Accept(extender);   // signature:    Task Accept<TValue>(this TValue value, IAsyncExtender extender)...
@@ -170,7 +168,7 @@ The extensions are the definitions of the so-called visitor segments. In the exa
 Sync:
 
 ```c#
-// A version with state
+// A version with state (which is here denoted as a string)
 public class ItemExtension : IExtension<string, Item>
 {
     public void Extend(Item context, IExtender<string> extender)
@@ -248,7 +246,7 @@ Sync:
 ```c#
 // Stateful version: both extension types can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddXtender<string>((builder, provider) =>
+    .AddXtender<string>(builder =>
     {
         builder
             .Attach<Item, StatefulItemExtension>()
@@ -258,7 +256,7 @@ var serviceProvider = new ServiceCollection()
 
 // Stateless version: only stateless versions can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddXtender((builder, provider) =>
+    .AddXtender(builder =>
     {
         builder
             .Default<MyDefaultExtension>()
@@ -273,7 +271,7 @@ Async:
 ```c#
 // Stateful version: both extension types can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddAsyncXtender<string>((builder, provider) =>
+    .AddAsyncXtender<string>(builder =>
     {
         builder
             .Default<MyDefaultExtension>()
@@ -284,7 +282,7 @@ var serviceProvider = new ServiceCollection()
 
 // Stateless version: only stateless versions can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddAsyncXtender((builder, provider) =>
+    .AddAsyncXtender(builder =>
     {
         builder
             .Attach<Item, ItemExtension>()
@@ -298,36 +296,16 @@ Here both the aforementioned ItemExtension and the CompositeExtension are linked
 **Notice:**
 
 - The builder can start with *Default<TDefaultExtension>()* (this method has an override) registers a default extension being set for when a lookup for a certain extension for a specific concrete type results in it not being found. Then this default extension could handle these 'default' cases.
-- The builder will give rise to a specific extender-core which will be registered as a **Singleton** dependency. Though, the extensions are refreshed to also support transient and scoped dependencies, ensured by letting the extender replay a providing-lambda stored in the dictionary on the given key. It should be noted that when a developer wants to store multiple extenders with the same visitor-state, he/she should use the ExtenderFactory methodology or use libraries like: [ModulR](https://github.com/emprax/ModulR).
 
+Additionally an extender registry can be defined housing multiple different extender combinations
 Sync:
 
 ```c#
-// Stateful version: both extension types can be registered here.
-var serviceProvider = new ServiceCollection()
-    .AddXtenderFactory<string, OrderCreateRequest>((builder, provider) =>
-    {
-        builder.WithExtender("build-up", bldr =>
-        {
-            bldr.Attach<Order, OrderCreateExtension>()
-                .Attach<OrderLine, StatefulOrderLineCreateExtension>()
-                .Attach<Address, OrderAddressCreateExtension>()
-        });
-        
-        builder.WithExtender("attachments", bldr =>
-        {
-            bldr.Default()
-                .Attach<OrderAttachment, StatefulOrderAttachmentCreateExtension>()
-                .Attach<Address, OrderAttachmentAddressCreateExtension>()
-        });
-    })
-    .BuildServiceProvider();
-
 // Stateless version: only stateless versions can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddXtenderFactory<string>((builder, provider) =>
+    .AddXtenders(builder =>
     {
-        builder.WithExtender("build-up", bldr =>
+        builder.AddExtender("build-up", bldr =>
         {
             bldr.Default()
                 .Attach<Order, OrderCreateExtension>()
@@ -335,7 +313,8 @@ var serviceProvider = new ServiceCollection()
                 .Attach<Address, OrderAddressCreateExtension>()
         });
         
-        builder.WithExtender("attachments", bldr =>
+        // With state
+        builder.AddExtender<string>("attachments", bldr =>
         {
             bldr.Attach<OrderAttachment, OrderAttachmentCreateExtension>()
                 .Attach<Address, OrderAttachmentAddressCreateExtension>()
@@ -349,16 +328,17 @@ Async:
 ```c#
 // Stateful version: both extension types can be registered here.
 var serviceProvider = new ServiceCollection()
-    .AddAsyncXtenderFactory<string, OrderCreateRequest>((builder, provider) =>
+    .AddAsyncXtenders(builder =>
     {
-        builder.WithExtender("build-up", bldr =>
+        builder.AddExtender("build-up", bldr =>
         {
             bldr.Attach<Order, OrderCreateExtension>()
                 .Attach<OrderLine, StatefulOrderLineCreateExtension>()
                 .Attach<Address, OrderAddressCreateExtension>()
         });
         
-        builder.WithExtender("attachments", bldr =>
+        // with state
+        builder.AddExtender<string>("attachments", bldr =>
         {
             bldr.Default()
                 .Attach<OrderAttachment, StatefulOrderAttachmentCreateExtension>()
@@ -366,39 +346,7 @@ var serviceProvider = new ServiceCollection()
         });
     })
     .BuildServiceProvider();
-
-// Stateless version: only stateless versions can be registered here.
-var serviceProvider = new ServiceCollection()
-    .AddAsyncXtenderFactory<string>((builder, provider) =>
-    {
-        builder.WithExtender("build-up", bldr =>
-        {
-            bldr.Default()
-                .Attach<Order, OrderCreateExtension>()
-                .Attach<OrderLine, OrderLineCreateExtension>()
-                .Attach<Address, OrderAddressCreateExtension>()
-        });
-        
-        builder.WithExtender("attachments", bldr =>
-        {
-            bldr.Attach<OrderAttachment, OrderAttachmentCreateExtension>()
-                .Attach<Address, OrderAttachmentAddressCreateExtension>()
-        });
-    })
-    .BuildServiceProvider();
 ```
-
-​		OrderCreateRequest is used here to function as an object of state for the visitor/extender and the extensions can choose to modify it. What happens     		here is that the factory is created and two extenders are being build up, both using the same type of state. The difference with this and the single 		registration example (seen further above) is that these here are not dependent on a singleton core. The cores created for these extenders are stored     		with the factory. Although, the extenders are not singleton dependent, the ExtenderFactory/AsyncExtenderFactory is. The names given within the 		registrations for the extenders (*"build-up"* and *"attachments"*) are functioning as keys for which these extenders are stored within ExtenderFactory 		/AsyncExtenderFactory (the factory utilizes a dictionary to find specific lambda's by key as factories that create the extenders). The keys can then be 		used to query the factory for the creation of the right extender setup. The keys are strings because the first of the generics given for					*AddXtenderFactory* /AddAsyncXtenderFactory describes the key-type.
-
-| :exclamation: NOTE​                                           |
-| :----------------------------------------------------------- |
-| The builders for the extenders in this example all utilize the *Default* method without generic. This will provide the respected extender with a 		really default (do-nothing) type of default-extension. This is the so-called *DefaultExtension<TState>*/AsyncDefaultExtension<TState> that is provided out of the box by the Xtender library. |
-
-- Attach methods have to give both the context type and the extension type. The context type is the concrete type/implementation type or whatever object that implements the *IAccepter*/IAsyncAccepter interface and has to be visited/extended by this extender.
-
-- | :exclamation: NOTE​                                           |
-  | :----------------------------------------------------------- |
-  | The way the visitor pattern works is that the visitor is passed to the accepter, so here in this library: to pass *Extender/AsyncExtender* to the accepter. The other way around, the *Extender/AsyncExtender* could originally not find the right type for the accepter and would directly utilize the default extension, however the proxy implementation in this library does now enable both ways as stated before. It is recommended to implement the *Accept* method of the accepting-object to directly pass itself to the extender *Extend* method. |
 
 The extender itself has already been defined within the library and carries the extensions as well as the visitor-state. This state type is determined by the AddXtender<TState>(...)/AddSyncXtender<TState>(...) method, where the TState serves this purpose. The state is used to carry specific data that would, when using the standard Visitor Pattern, have been preserved by the visitor class itself and could be updated when visiting the accepting-objects. So the state in this implementation provides its take on that regard as well as a differentiating key for creating multiple extenders with different configuration through defining a differently typed state.
 
@@ -482,10 +430,10 @@ var composition = new Composite
 };
 
 // Getting the ExtenderFactory from the ServiceProvider from the DI.
-var factory = services.GetRequiredService<IExtenderFactory<string, string>>(); // 1st generic is the key, 2nd generic the state, when using the stateful version, otherwise not a 2nd generic.
+var registry = services.GetRequiredService<IExtenderRegistry>();
 
-// Letting the extender be created for a saved core by the ExtenderFactory.
-var extender = factory.Create("component-traverser");
+// Trying to get the extender.
+registry.TryGet("component-traverser", out var extender);
 
 // The extension process here as adding new operations.
 composition.Accept(extender);
@@ -511,10 +459,10 @@ var composition = new Composite
 };
 
 // Getting the ExtenderFactory from the ServiceProvider from the DI.
-var factory = services.GetRequiredService<IAsyncExtenderFactory<string, string>>(); // 1st generic is the key, 2nd generic the state, when using the stateful version, otherwise not a 2nd generic.
+var registry = services.GetRequiredService<IAsyncExtenderRegistry>();
 
-// Letting the extender be created for a saved core by the ExtenderFactory.
-var extender = factory.Create("component-traverser");
+// Trying to get the extender.
+registry.TryGet("component-traverser", out var extender);
 
 // The extension process here as adding new operations.
 await composition.Accept(extender);
